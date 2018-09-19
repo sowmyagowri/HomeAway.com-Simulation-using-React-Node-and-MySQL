@@ -1,0 +1,49 @@
+body{
+    padding: 0 !important;
+    color: #353e44;
+    background-color: #f4f4f4;
+}
+
+* {
+    box-sizing: border-box;
+  }
+  
+  .mybarcontainer {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center
+  }
+
+  .myprofilecontainer {
+    width: 30%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  ul li {
+    display: inline;
+    text-align: center;
+  }
+  
+  a.profilea {
+    display: inline-block;
+    width: 50%;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none !important;
+    color: #333;
+    font-size: 150%;
+  }
+  
+  .profile:hover ~ .profilehr {
+    margin-left: 50%;
+  }
+  
+  .profilehr {
+    height: .25rem;
+    width: 50%;
+    margin: 0;
+    background: tomato;
+    border: none;
+    transition: .3s ease-in-out;
+  }

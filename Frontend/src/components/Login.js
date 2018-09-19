@@ -4,7 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import './Login.css';
-import './bootstrap-social.css';
+import {Navbar} from "react-bootstrap";
 
 //Define a Login Component
 class Login extends Component{
@@ -57,14 +57,13 @@ class Login extends Component{
             formIsValid = false;
             alert("Password is a Required field");
             console.log("Password cannot be empty");
-         }
+        }
         
        return formIsValid;
    }
     //submit Login handler to send a request to the node backend
     submitLogin(event) {
         console.log("Inside submit login");
-        var headers = new Headers();
         //prevent page from refresh
         event.preventDefault();
         if(this.handleValidation()){
@@ -96,12 +95,19 @@ class Login extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(cookie.load('cookie')){
+        if(cookie.load('cookie1')){
             redirectVar = <Redirect to= "/home"/>
         }
         return(
             <div>
                 {redirectVar}
+                <Navbar>
+                    <Navbar.Header>
+                    <Navbar.Brand>
+                        <a href="/home" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
+                    </Navbar.Brand>
+                    </Navbar.Header>
+                </Navbar>
                 <div class="container">
                 <p></p>
                 </div>
@@ -122,14 +128,14 @@ class Login extends Component{
                 </div>
                 <div class="center">
                     <div id="yourdiv">
-                        <h1 class="display-5">Log in to HomeAway<br></br>
-                        <small>	Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small>	</h1>
+                        <h1 class="display-5">Log in to HomeAway</h1>
+                        <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
                     </div>
                 </div>
                 <div class="container">    
                 <div class="col-sm-6 col-sm-offset-4">
                 <div class="login-form">
-                    <h2><small>Account Login</small></h2>  
+                    <h2>Account Login</h2>  
                     <hr width="98%"></hr>         
                     <br></br>
                             <div class="form-group">
@@ -145,13 +151,13 @@ class Login extends Component{
                             <button onClick = {this.submitLogin} class="btn btn-warning" >Log In</button>
                             </div>
                             <br></br>
-                            <input type="checkbox" name="signedin" value="signedin"/> Keep me signed in<br></br>
                             <div class="mydiv">
                                 <span class="myspan">or</span>
                             </div>
                             <br></br>
                             <button class="mybtn facebook_button">Log in with Facebook</button>
                             <br></br>
+                            <button className="mybtn google_button" style = {{marginTop : "20px", marginBottom : "20px", color: "#787878", background: "#f3f3f3 url(google_logo.png) left no-repeat"}}>Log in with Google</button>
                             <br></br>
                             <font size="2">We don't post anything without your permission.</font>
                             <br></br>

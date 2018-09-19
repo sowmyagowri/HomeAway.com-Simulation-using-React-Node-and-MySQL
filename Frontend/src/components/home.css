@@ -1,0 +1,26 @@
+.btn.btn-primary {
+    background: #f0ad4e none repeat scroll 0 0;
+    background-color: none !important;
+    border-color: #f0ad4e;
+    color: #ffffff;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    background-color: #ff8a00;
+    font-size: 18px;
+    line-height: 1.33;
+    background-image: none !important;
+  }
+
+  .btn {
+    height:20px;
+	width:50px;
+  }
+
+  .white {
+    color:white !important;
+  }
+
+.dropdown-toggle{
+    width: 10px;
+}

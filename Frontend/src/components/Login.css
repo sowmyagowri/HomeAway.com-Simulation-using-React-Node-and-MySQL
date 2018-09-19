@@ -1,8 +1,21 @@
+body{
+  padding: 0 !important;
+  color: #353e44;
+  background-color: #f4f4f4;
+}
+
 .center {
     margin-left: auto;
     margin-right: auto;
     width: auto; /* Your width */
 }
+
+.navbar{
+  background: #fff;
+  padding: 14px 0;
+  margin-bottom: 0;
+}
+
 #yourdiv {
     text-align: center;
     margin-left: auto;
@@ -13,7 +26,11 @@ h1 {font-weight: lighter;
     font-family: 'Calibri';
     font-size: 295%
 }
-small {font-size: 10%}
+
+h2 {font-weight: lighter; 
+  font-family: 'Calibri';
+}
+
 .col-sm-6 {
   background-color: white;
   border:1px solid #9499a1;
@@ -65,4 +82,5 @@ hr {
   line-height: 22px;
   cursor: pointer;
 }
+
 button#opener_guid {border:0;background:none; color: rgb(34, 45, 199); cursor:pointer;}

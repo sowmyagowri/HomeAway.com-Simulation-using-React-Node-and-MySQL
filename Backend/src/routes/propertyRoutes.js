@@ -1,23 +1,7 @@
 var express = require('express');
+var app = express();
 var router = express.Router();
-var pool = require('../models/UserDB.js');
-var crypto = require('crypto'),
-    algorithm = 'aes-256-ctr',
-    password = 'd6F3Efeq';
-
-function encrypt(text){
-  var cipher = crypto.createCipher(algorithm,password)
-  var crypted = cipher.update(text,'utf8','hex')
-  crypted += cipher.final('hex');
-  return crypted;
-}
-
-function decrypt(text){
-  var decipher = crypto.createDecipher(algorithm,password)
-  var dec = decipher.update(text,'hex','utf8')
-  dec += decipher.final('utf8');
-  return dec;
-}
+var pool = require('../models/database.js');
 
 // Validate login user details
 router.route('/login').post(function (req, res) {
@@ -34,9 +18,7 @@ router.route('/login').post(function (req, res) {
         if (rows.length > 0) {
           decryptedString = decrypt(rows[0].password);
           if (password == decryptedString) {
-            res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
-            res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-            res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie',"admin",{maxAge: 900000, httpOnly: false, path : '/'});
             req.session.user = user;
             res.status(200).send("Login Successful")
           }
@@ -108,22 +90,6 @@ router.route('/signup').post(function (req, res) {
         }
       }
     })
-});
-
-// fetch user profile details
-router.route('/profile').get(function (req, res) {
-  console.log("Inside Profile Get");
-  var email = req.body.email;
-  
-  pool.query('SELECT * FROM homeaway WHERE email = ?', [email], (err, rows, fields) => {
-    if (err){
-          console.log("unable to read the database");
-          res.status(400).send("unable to read the database");
-    } else {
-        res.status(200).send("User Added");
-              console.log("User Added");
-    }
-  })
 });
 
 module.exports = router;

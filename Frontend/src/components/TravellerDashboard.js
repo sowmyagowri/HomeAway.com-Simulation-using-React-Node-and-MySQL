@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './bootstrap-social.css';
-import './PropertyPost.css';
+import './TravellerDashboard.css';
 import {Navbar} from "react-bootstrap";
 
 //Define a Login Component
-class OwnerPropertyPost extends Component{
+class Profile extends Component{
     //call the constructor method
     constructor(props){
         //Call the constrictor of Super class i.e The Component
@@ -26,6 +25,31 @@ class OwnerPropertyPost extends Component{
             authFlag : false
         })
     }
+
+    componentDidMount(){
+        var input_email = cookie.load('cookie2');
+        axios.get('http://localhost:3001/profile',input_email)
+                .then(response => {
+                    console.log("Status Code : ",response.status);
+                    if(response.status === 200){
+                        this.setState({
+                            authFlag : true
+                        })
+                    }else{
+                        this.setState({
+                            authFlag : false
+                        })
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert("Cannot fetch details");
+                    this.setState({
+                        authFlag : false
+                })
+            });
+    }
+
     //email change handler to update state variable with the text entered by the user
     emailChangeHandler = (e) => {
         console.log("Inside email change handler");
@@ -66,7 +90,6 @@ class OwnerPropertyPost extends Component{
     //submit Login handler to send a request to the node backend
     submitLogin(event) {
         console.log("Inside submit login");
-        var headers = new Headers();
         //prevent page from refresh
         event.preventDefault();
         if(this.handleValidation()){
@@ -97,72 +120,88 @@ class OwnerPropertyPost extends Component{
 
     render(){
         //redirect based on successful login
-        //let redirectVar = null;
-        //if(!cookie.load('cookie')){
-        //    redirectVar = <Redirect to= "/"/>
-        //}
+        let redirectVar = null;
+        if(!cookie.load('cookie1')){
+            redirectVar = <Redirect to= "/"/>
+        }
         return(
             <div>
                 <Navbar>
                     <Navbar.Header>
-                        <Navbar.Brand>
-                            <a href="/home" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
-                        </Navbar.Brand>
+                    <Navbar.Brand>
+                        <a href="/home" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
+                    </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>
-                <div class="container-fluid">    
-                <div class="col-sm-6 col-sm-offset-4">
+                <div class="center">
+                    <div id="yourdiv">
+                        <div id="profile-container">
+                            <image id="profileImage" src="http://lorempixel.com/100/100" />
+                        </div>
+                        <br/>
+                        <h2 class="display-5">Name<br></br>
+                        <small>	Member since</small></h2>
+                    </div>
+                </div>
+                <div class="mybarcontainer">
+                    <ul>
+                        <li class="myTrips"><a class="profilea" href="#">My Trips</a></li>
+                        <li class="profile"><a class="profilea" href="#">Profile</a></li>
+                        <hr class="profilehr"/>
+                    </ul>
+                </div>
+               
+                <div class="myprofilecontainer">
                 <div class="login-form">
-                    <h2><small>Property Information</small></h2>  
-                    <hr width="98%"></hr>         
+                    <h2><small>Profile Information</small></h2>  
+                      
                     <br></br>
                             <div class="form-group">
-                                <input onChange = {this.countryChangeHandler} type="text" class="form-control" name="country" placeholder="Country" required/>
+                                <input onChange = {this.firstnameChangeHandler} type="text" class="form-control" name="firstname" placeholder="First Name" required/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.addressChangeHandler} type="text" class="form-control" name="address" placeholder="Street Address" required/>
+                                <input onChange = {this.lastnameChangeHandler} type="text" class="form-control" name="lastname" placeholder="Last Name or Initial" required/>
+                            </div>
+                            <div class="form-group">
+                                <input onChange = {this.aboutmeChangeHandler} type="text" class="form-control input-lg" name="aboutme" placeholder="About me"/>
                             </div>
                             <div class="form-group">
                                 <input onChange = {this.cityChangeHandler} type="text" class="form-control" name="city" placeholder="City"/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.stateChangeHandler} type="text" class="form-control" name="state" placeholder="State"/>
+                                <input onChange = {this.countryChangeHandler} type="text" class="form-control" name="country" placeholder="Country"/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.zipcodeChangeHandler} type="text" class="form-control" name="zipcode" placeholder="Zip Code"/>
-                            </div>
-                            <h2><small>Describe your Property</small></h2>  
-                            <hr width="98%"></hr>         
-                            <div class="form-group">
-                                <input onChange = {this.headlineChangeHandler} type="text" class="form-control" name="headline" placeholder="Headline"/>
+                                <input onChange = {this.companyChangeHandler} type="text" class="form-control" name="company" placeholder="Company"/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.descriptionChangeHandler} type="text" class="form-control" name="description" placeholder="Description"/>
+                                <input onChange = {this.schoolChangeHandler} type="text" class="form-control" name="school" placeholder="School"/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.priceChangeHandler} min = "0" type="text" class="form-control" name="price" placeholder="Price"/>
+                                <input onChange = {this.hometownChangeHandler} type="text" class="form-control" name="hometown" placeholder="Hometown"/>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.bedroomChangeHandler} type="number" min ="1" class="form-control" name="bedroom" placeholder="Bedrooms"/>
+                            <select value={this.state.gender} style={{width:"100%"}}onChange={this.handleChange}>
+                                <option value="" hidden>Gender</option>
+                                <option name="male"> Male</option>
+                                <option name="female">Female</option>
+                                <option name="other">Other</option>
+                            </select><br/>
+                            <h6 align = "left"><small>This is never shared</small></h6>
                             </div>
                             <div class="form-group">
-                                <input onChange = {this.bathroomChangeHandler} type="number" min ="1" class="form-control" name="bathroom" placeholder="Bathrooms"/>
+                                <input onChange = {this.phoneChangeHandler} type="text" class="form-control" name="phone" placeholder="Phone Number"/>
                             </div>
-                            <h2><small>Available</small></h2> 
-                           <label for="from">From</label>
-                                <input onChange = {this.availablefromChangeHandler} type="date" name="fromdate"/>
-                            <label for="to">To</label>
-                            <input onChange = {this.availabletoChangeHandler} type="date" name="todate"/>
                         </div>
-                    </div>
+                    
                 </div>
                 <br></br>
                 <div class="col-md-10 text-center"> 
                 <button onClick = {this.saveChanges} class="btn-primary btn-lg" >Save Changes</button>
                 </div>
-        </div>
+            </div>
         )
     }
 }
 //export Login Component
-export default OwnerPropertyPost;
+export default Profile;

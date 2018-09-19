@@ -2,10 +2,10 @@
 var express = require('express');
 // App Instance
 var app = express();
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var cors = require('cors');
+var pool = require('./src/models/UserDB.js');
 
 //server configuration
 var basePath = '/homeaway';
@@ -30,18 +30,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Connection to DB
-mongoose.connect('mongodb://localhost:27017')
-    .then(() => {
-      console.log('Backend Started');
-    })
-    .catch(err => {
-        console.error('Backend error:', err.stack);
-        process.exit(1);
-    });
+pool.query('select * from users',  function(err, rows){
+    if(err) throw err;
+    else {
+        console.log("Connection to DB established");
+        console.log(rows);
+    }
+  });  
 
 // Routes and Backend Funcioncalities
-var todoListRoutes = require('./src/routes/todoListRoutes');
 var loginRoutes = require('./src/routes/loginRoutes');
 
 app.use(express.static('public'));
