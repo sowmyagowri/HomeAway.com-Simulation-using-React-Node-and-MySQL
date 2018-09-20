@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './Login.css';
+import './OwnerLogin.css';
 import {Navbar} from "react-bootstrap";
 
 //Define a Login Component

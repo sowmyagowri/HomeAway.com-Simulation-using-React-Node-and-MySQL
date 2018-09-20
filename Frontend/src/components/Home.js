@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import {Nav, Navbar, NavItem, NavDropdown, MenuItem} from "react-bootstrap";
-import Background from './homepage_background.png';
-import DatePicker from 'react-date-picker';
+import {Navbar} from "react-bootstrap";
+import Background from './homepage_background.png'
 
 class Home extends Component {
     constructor(props){
@@ -23,7 +22,7 @@ class Home extends Component {
     logout = () => {
       cookie.remove('cookie1', {path: '/'})
       console.log("cookie removed!")
-      window.location = "/home"
+      window.location = "/"
     }
 
     onChangeArrive = date => this.setState({ fromDate: date })
@@ -58,13 +57,14 @@ class Home extends Component {
                 <div className="btn btn-group">
                   <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                   <div className="dropdown-menu">
-                    <a className="dropdown-item" href="/travellerDashboard">DashBoard</a>
+                    <a className="dropdown-item" href="/Profile">Profile</a>
+                    <a className="dropdown-item" href="/MyTrips">My Trips</a>
                     <a className="dropdown-item" onClick= {this.logout}>Logout</a>
                   </div>
                 </div>
              }
               <button className="btn btn-group" style = {{color: "#fff", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#ffffff"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
-              <a href="/listyourproperty">List your Property</a>
+              <a href="/owner/propertypost">List your Property</a>
               </button>
               <img src="P3O5JjfH_400x400.png"/>
             </div>
@@ -77,31 +77,20 @@ class Home extends Component {
                       <div className="col-md-4 col-md-offset-3">
                           <div className="form-group">
                       		<input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"
-}} className="form-control" name="search" id="search" placeholder="Where do you want to go?" onChange = {this.locationToSearch}/>
+}} className="form-control" name="search" id="search" placeholder="Where do you want to go?" onChange = {this.locationToSearchChangeHandler}/>
                         		<span className="glyphicon glyphicon-search form-control-feedback"></span>
                       	  </div>
                       </div>
                       <div className="col-md-offset-3">
-                          <div className="form-group" style = {{backgroundColor: "#fff", height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}}>
-                          <DatePicker
-                              className = "center"
-                              onChange={this.onChangeArrive}
-                              value={this.state.fromDate}
-                            />
-                      	  </div>
+                          <input onChange = {this.availablefromChangeHandler} type="date" name="fromdate"/>  
                       </div>
-                      <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
-                          <div className="form-group" style = {{backgroundColor: "#fff", height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}}>
-                          <DatePicker
-                              onChange={this.onChangeDepart}
-                              value={this.state.toDate}
-                            />
-                      	  </div>
+                      <div className="col-md-offset-3">
+                          <input onChange = {this.availabletoChangeHandler} type="date" name="todate"/>  
                       </div>
                       <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                           <div className="form-group">
                       		<input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"
-}} className="form-control" placeholder="No of guests?" onChange = {this.noOfGuests}/>
+}} className="form-control" placeholder="No of guests?" onChange = {this.noOfGuestsChangeHandler}/>
                         		<span className="glyphicon glyphicon-search form-control-feedback"></span>
                       	  </div>
                       </div>

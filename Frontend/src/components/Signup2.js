@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './Login.css';
+import './OwnerLogin.css';
 import './bootstrap-social.css';
 import {Navbar} from "react-bootstrap";
 
@@ -46,7 +46,6 @@ class Signup2 extends Component{
     }
     //email change handler to update state variable with the text entered by the user
     emailChangeHandler = (e) => {
-        console.log("Inside email change handler");
         this.setState({
             email : e.target.value
         })
@@ -114,7 +113,6 @@ class Signup2 extends Component{
     //submit Login handler to send a request to the node backend
     submitLogin(event) {
         console.log("Inside submit login");
-        var headers = new Headers();
         //prevent page from refresh
         event.preventDefault();
         if(this.handleValidation()){
@@ -130,12 +128,12 @@ class Signup2 extends Component{
             //make a post request with the user data
             axios.post('http://localhost:3001/homeaway/signup',data)
                 .then(response => {
-                    console.log("Status Code : ",response.status);
+                    console.log("Status Code : ", response.status);
                     if(response.status === 200){
                         this.setState({
                             authFlag : true
                         })
-                    }else{
+                    }else {
                         this.setState({
                             authFlag : false
                         })
@@ -154,8 +152,9 @@ class Signup2 extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(cookie.load('cookie1')){
-            redirectVar = <Redirect to= "/home"/>
+        cookie.load('cookie1');
+        if(this.state.authFlag){
+            redirectVar = <Redirect to= "/"/>
         }
         return(
             <div>

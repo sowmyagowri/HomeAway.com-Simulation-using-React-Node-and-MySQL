@@ -31,12 +31,12 @@ app.use(function(req, res, next) {
 });
 
 pool.query('select * from users',  function(err, rows){
-    if(err) throw err;
-    else {
-        console.log("Connection to DB established");
-        console.log(rows);
-    }
-  });  
+  if(err) throw err;
+  else {
+    console.log("Connection to DB established");
+    console.log(rows);
+  }
+});  
 
 // Routes and Backend Funcioncalities
 var loginRoutes = require('./src/routes/loginRoutes');

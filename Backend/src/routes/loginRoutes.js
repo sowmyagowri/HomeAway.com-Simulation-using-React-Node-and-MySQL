@@ -29,6 +29,7 @@ router.route('/login').post(function (req, res) {
   
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
     if (err) {
+      console.log(err);
       res.status(400).send("user does not exist");
     } else {
         if (rows.length > 0) {
@@ -55,6 +56,7 @@ router.route('/owner/login').post(function (req, res) {
   
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
     if (err) {
+      console.log(err);
       res.status(400).send("user does not exist");
     } else {
         if (rows.length > 0) {
@@ -87,41 +89,82 @@ router.route('/signup').post(function (req, res) {
     "created": year
   }
 
-  pool.query('SELECT * FROM homeaway WHERE email = ?', [trimemail], (err, rows, fields) => {
+  pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
     if (err){
-          console.log("unable to read the database");
-          res.status(400).send("unable to read the database");
+        console.log(err);
+        console.log("unable to read the database");
+        res.status(400).send("unable to read the database");
     } else {
       if (rows.length > 0) {
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-          pool.query('INSERT INTO homeaway SET ?',userData, function (error, results, fields) {
-            if (err) {
-              console.log("unable to insert into database");
-              res.status(400).send("unable to insert into database");
-            } else {
-              res.status(200).send("User Added");
-              console.log("User Added");
-            }
-          });
-        }
+        pool.query('INSERT INTO users SET ?',userData, function (err) {
+        if (err) {
+          console.log("unable to insert into database");
+          res.status(400).send("unable to insert into database");
+        } else {
+          res.status(200).send("User Added");
+          console.log("User Added");
+          res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+        }});
       }
-    })
+    }
+  })
 });
 
 // fetch user profile details
-router.route('/profile').get(function (req, res) {
-  console.log("Inside Profile Get");
-  var email = req.body.email;
-  
-  pool.query('SELECT * FROM homeaway WHERE email = ?', [email], (err, rows, fields) => {
+router.route('/profile').post(function (req, res) {
+  console.log("Inside Profile fetch");
+  var input_email = req.body.email;
+  console.log(input_email);
+  pool.query('SELECT * FROM users WHERE email = ?', [input_email], (err, result) => {
     if (err){
-          console.log("unable to read the database");
-          res.status(400).send("unable to read the database");
+      console.log(err);
+      res.status(400).send("User not found");
+    }else {
+      res.status(200).send(JSON.stringify(result));
+    }
+  })
+});
+
+// save user profile details
+router.route('/profilesave').post(function (req, res) {
+  console.log("In profile save Post");
+  email = req.body.email.toLowerCase();
+  trimemail = email.trim();
+  
+  var userData = {
+    "firstname": req.body.firstname,
+    "lastname": req.body.lastname,
+    "aboutMe" : req.body.aboutMe,
+    "city" : req.body.city,
+    "state" : req.body.state,
+    "country" : req.body.country,
+    "company" : req.body.company,
+    "school" : req.body.school,
+    "hometown" : req.body.hometown,
+    "gender" : req.body.gender,
+    "phone" : req.body.phone
+  }
+
+  console.log(userData);
+  pool.query('UPDATE users SET ? WHERE email = ?', [userData, trimemail], function (err) {
+    if (err) {
+      console.log(err);
+      console.log("unable to update database");
+      res.status(400).send("unable to update database");
     } else {
-        res.status(200).send("User Added");
-              console.log("User Added");
+      pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, result) => {
+        if (err){
+          console.log(err);
+          res.status(400).send("User not found");
+        }else {
+          res.status(200).send(JSON.stringify(result));
+        }
+      })
     }
   })
 });

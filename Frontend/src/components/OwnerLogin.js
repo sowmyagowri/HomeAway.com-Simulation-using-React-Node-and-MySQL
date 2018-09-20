@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './Login.css';
+import './OwnerLogin.css';
 import './bootstrap-social.css';
 
 //Define a Login Component
@@ -64,7 +64,6 @@ class OwnerLogin extends Component{
     //submit Login handler to send a request to the node backend
     submitLogin(event) {
         console.log("Inside submit login");
-        var headers = new Headers();
         //prevent page from refresh
         event.preventDefault();
         if(this.handleValidation()){

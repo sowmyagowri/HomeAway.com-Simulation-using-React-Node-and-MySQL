@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './Login.css';
+import './OwnerLogin.css';
 import {Navbar} from "react-bootstrap";
 
 //Define a Signup1 Component
@@ -16,7 +16,7 @@ class Signup1 extends Component{
         //redirect based on successful login
         let redirectVar = null;
         if(cookie.load('cookie1')){
-            redirectVar = <Redirect to= "/home"/>
+            redirectVar = <Redirect to= "/"/>
         }
         return(
             <div>
