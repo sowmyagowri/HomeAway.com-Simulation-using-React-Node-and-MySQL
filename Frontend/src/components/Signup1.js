@@ -23,10 +23,11 @@ class Signup1 extends Component{
                 {redirectVar}
                 <Navbar>
                     <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="/home" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
-                    </Navbar.Brand>
+                        <Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
+                        </Navbar.Brand>
                     </Navbar.Header>
+                    <img src={require('./logo.png')} alt="Homeaway Logo"/>
                 </Navbar>
                 <div class="container">
                 <p></p>
@@ -49,14 +50,14 @@ class Signup1 extends Component{
                 <div class="center">
                     <div id="yourdiv">
                         <h1 class="display-5">Sign Up for HomeAway<br></br></h1>
-                        <h2><small>	Already have an account? <a class="bg-default" href="/login">Log in</a></small>	</h2>
+                        <h2><small>	Already have an account? <a class="bg-default" href="/traveller/login">Log in</a></small>	</h2>
                     </div>
                 </div>
-                <div class="container">    
-                    <div class="col-sm-6 col-sm-offset-4">
-                        <div class="login-form" style={{display: "inline-block"}}>
+                <div class="container">
+                <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
+                        <div class="login-form">
                             <br></br>
-                            <a href="/signup2"><button class="btn btn-warning">Sign Up with Email</button></a>
+                            <a href="/signup2"><button class="btn btn-warning" style={{width:"100%"}}>Sign Up with Email</button></a>
                             
                             <br></br>
                             <div class="mydiv">

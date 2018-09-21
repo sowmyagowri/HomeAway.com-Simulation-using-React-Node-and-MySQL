@@ -20,14 +20,14 @@ function decrypt(text){
 }
 
 // Validate login user details
-router.route('/login').post(function (req, res) {
+router.route('/traveller/login').post(function (req, res) {
   console.log("Inside Login Post");
   var email = req.body.email;
   var lowercaseemail = email.toLowerCase();
   var trimemail = lowercaseemail.trim();
   var password = req.body.password;
   
-  pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
+  pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err) {
       console.log(err);
       res.status(400).send("user does not exist");
@@ -37,8 +37,8 @@ router.route('/login').post(function (req, res) {
           if (password == decryptedString) {
             res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-            res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-            req.session.user = user;
+            res.cookie('cookie3',rows[0].firstname + ' ' + rows[0].lastname,{maxAge: 900000, httpOnly: false, path : '/'});
+            req.session.user = rows[0].email;
             res.status(200).send("Login Successful")
           }
       }
@@ -59,14 +59,16 @@ router.route('/owner/login').post(function (req, res) {
       console.log(err);
       res.status(400).send("user does not exist");
     } else {
-        if (rows.length > 0) {
-          if (rows[0].password == password && isOwner == 'Y') {
-              res.cookie('cookie',req.body.email,{maxAge: 900000, httpOnly: false, path : '/'});
-              req.session.user = user;
-              res.status(200).send("Login Successful");
-
-          }
+      if (rows.length > 0) {
+        decryptedString = decrypt(rows[0].password);
+        if (password == decryptedString && isOwner == 'Y') {
+          res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+          req.session.user = rows[0].email;
+          res.status(200).send("Login Successful")
         }
+      }
       }
     })
 });

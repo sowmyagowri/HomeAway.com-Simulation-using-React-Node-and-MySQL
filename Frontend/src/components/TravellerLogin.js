@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './OwnerLogin.css';
 import {Navbar} from "react-bootstrap";
+import './OwnerLogin.css';
 
 //Define a Login Component
 class Login extends Component{
@@ -76,7 +76,7 @@ class Login extends Component{
             //set the with credentials to true
             axios.defaults.withCredentials = true;
             //make a post request with the user data
-            axios.post('http://localhost:3001/homeaway/login',data)
+            axios.post('http://localhost:3001/homeaway/traveller/login',data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200){
@@ -96,18 +96,19 @@ class Login extends Component{
         //redirect based on successful login
         let redirectVar = null;
         if(cookie.load('cookie1')){
-            redirectVar = <Redirect to= "/home"/>
+            redirectVar = <Redirect to= "/"/>
         }
         return(
             <div>
                 {redirectVar}
                 <Navbar>
                     <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="/home" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
-                    </Navbar.Brand>
+                        <Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
+                        </Navbar.Brand> 
                     </Navbar.Header>
-                </Navbar>
+                    <img src={require('./logo.png')} alt="Homeaway Logo"/>
+                </Navbar>  
                 <div class="container">
                 <p></p>
                 </div>
@@ -132,8 +133,8 @@ class Login extends Component{
                         <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
                     </div>
                 </div>
-                <div class="container">    
-                <div class="col-sm-6 col-sm-offset-4">
+                <div class="container">
+                <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                 <div class="login-form">
                     <h2>Account Login</h2>  
                     <hr width="98%"></hr>         
@@ -148,7 +149,7 @@ class Login extends Component{
                             <br></br>
                             <br></br>
                             <div>
-                            <button onClick = {this.submitLogin} class="btn btn-warning" >Log In</button>
+                            <button onClick = {this.submitLogin} class="btn btn-warning" style={{width:"100%"}} >Log In</button>
                             </div>
                             <br></br>
                             <div class="mydiv">
@@ -163,14 +164,14 @@ class Login extends Component{
                             <br></br>
                             <br></br>
                     </div>
-                    </div>
+                </div>
                 </div>
                 <br></br>
                 <div class="center" id= "yourdiv">
-                <font size="1">Use of this Web site constitutes acceptance of the HomeAway.com Terms and Conditions and Privacy Policy.
-                    <br></br>
-                    ©2018 HomeAway. All rights reserved.</font>
-                    </div>
+                    <font size="1">Use of this Web site constitutes acceptance of the HomeAway.com Terms and Conditions and Privacy Policy.
+                        <br></br>
+                        ©2018 HomeAway. All rights reserved.</font>
+                </div>
             </div>
         )
     }

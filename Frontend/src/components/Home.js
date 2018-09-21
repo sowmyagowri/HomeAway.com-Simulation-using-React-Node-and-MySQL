@@ -21,6 +21,8 @@ class Home extends Component {
 
     logout = () => {
       cookie.remove('cookie1', {path: '/'})
+      cookie.remove('cookie2', {path: '/'})
+      cookie.remove('cookie3', {path: '/'})
       console.log("cookie removed!")
       window.location = "/"
     }
@@ -45,28 +47,38 @@ class Home extends Component {
               </Navbar.Brand>
             </Navbar.Header>
             <div>
-            {!this.state.isTravelerLoggedIn?
+            {!this.state.isTravelerLoggedIn 
+              ?
+              (
                 <div className="btn btn-group">
-                  <button className="dropdown-toggle white" style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Login</button>
+                  <button className="dropdown-toggle white" style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" aria-haspopup="true" aria-expanded="true">Login</button>
                   <div className="dropdown-menu">
-                    <a className="dropdown-item" href="/login">Traveler Login</a>
+                    <a className="dropdown-item" href="/login">Traveller Login</a>
                     <a className="dropdown-item" href="/owner/login">Owner Login</a>
                   </div>
                 </div>
+                )
                 :
+                (
                 <div className="btn btn-group">
-                  <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
+                  <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                   <div className="dropdown-menu">
                     <a className="dropdown-item" href="/Profile">Profile</a>
-                    <a className="dropdown-item" href="/MyTrips">My Trips</a>
+                    { (cookie.load('cookie1') === 'travellercookie') ? (
+                      <a className="dropdown-item" href="/MyTrips">My Trips</a> 
+                    ): (
+                      <a className="dropdown-item" href="/MyListings">My Listings</a> 
+                    )
+                    }
                     <a className="dropdown-item" onClick= {this.logout}>Logout</a>
                   </div>
                 </div>
+                )
              }
               <button className="btn btn-group" style = {{color: "#fff", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#ffffff"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
               <a href="/owner/propertypost">List your Property</a>
               </button>
-              <img src="P3O5JjfH_400x400.png"/>
+              <img src={require('./logo.png')} alt="Homeaway Logo"/>
             </div>
             </Navbar>
             <div className = "container">

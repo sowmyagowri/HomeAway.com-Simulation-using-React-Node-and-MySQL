@@ -161,10 +161,11 @@ class Signup2 extends Component{
                 {redirectVar}
                 <Navbar>
                     <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="/home" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
-                    </Navbar.Brand>
+                        <Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
+                        </Navbar.Brand>
                     </Navbar.Header>
+                    <img src={require('./logo.png')} alt="Homeaway Logo"/>
                 </Navbar>
                 <div class="container">
                 <p></p>
@@ -187,20 +188,20 @@ class Signup2 extends Component{
                 <div class="center">
                     <div id="yourdiv">
                         <h1 class="display-5">Sign Up for HomeAway<br></br></h1>
-                        <h2><small>	Already have an account? <a class="bg-default" href="/login">Log in</a></small></h2>
+                        <h2><small>	Already have an account? <a class="bg-default" href="/traveller/login">Log in</a></small></h2>
                     </div>
                 </div>
-                <div class="container">    
-                    <div class="col-sm-6 col-sm-offset-4">
-                        <div class="login-form" style={{display: "inline-block"}}>
+                <div class="container">
+                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
+                        <div class="login-form">
                             <br></br>
                             <div class="row">
-                                <div class="col-xs-6">
+                                <div class="col-xs-8">
                                     <div class="form-group">
                                         <input onChange = {this.firstnameChangeHandler} type="text" class="form-control" name="firstname" placeholder="First Name"/>
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12">
                                     <div class="form-group">
                                         <input onChange = {this.lastnameChangeHandler} type="text" class="form-control" name="lastname" placeholder="Last Name"/>
                                     </div>
@@ -213,7 +214,7 @@ class Signup2 extends Component{
                                 <input onChange = {this.passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password"/>
                             </div>
                             <div>
-                                <button onClick = {this.submitLogin} class="btn btn-warning" >Sign me Up</button>
+                                <button onClick = {this.submitLogin} class="btn btn-warning" style={{width:"100%"}}>Sign me Up</button>
                             </div>
                         </div>
                         <div class="mydiv"><span class="myspan">or</span></div>
@@ -230,7 +231,7 @@ class Signup2 extends Component{
                             </font>
                         </div>
                         <br></br>
-                    </div>
+                        </div>
                 </div>
                 <br></br>
                 <div class="center" id= "yourdiv">

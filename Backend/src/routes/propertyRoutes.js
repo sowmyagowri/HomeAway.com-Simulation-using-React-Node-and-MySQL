@@ -1,95 +1,42 @@
 var express = require('express');
-var app = express();
 var router = express.Router();
-var pool = require('../models/database.js');
+var pool = require('../models/UserDB.js');
 
-// Validate login user details
-router.route('/login').post(function (req, res) {
-  console.log("Inside Login Post");
-  var email = req.body.email;
-  var lowercaseemail = email.toLowerCase();
-  var trimemail = lowercaseemail.trim();
-  var password = req.body.password;
-  
-  pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
-    if (err) {
-      res.status(400).send("user does not exist");
-    } else {
-        if (rows.length > 0) {
-          decryptedString = decrypt(rows[0].password);
-          if (password == decryptedString) {
-            res.cookie('cookie',"admin",{maxAge: 900000, httpOnly: false, path : '/'});
-            req.session.user = user;
-            res.status(200).send("Login Successful")
-          }
-      }
-    }
-  })
-});
-
-// Validate login user details
-router.route('/owner/login').post(function (req, res) {
-  console.log("Inside Owner Login Post");
-  var email = req.body.email;
-  var lowercaseemail = email.toLowerCase();
-  var trimemail = lowercaseemail.trim();
-  var password = req.body.password;
-  
-  pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows, fields) => {
-    if (err) {
-      res.status(400).send("user does not exist");
-    } else {
-        if (rows.length > 0) {
-          if (rows[0].password == password && isOwner == 'Y') {
-              res.cookie('cookie',req.body.email,{maxAge: 900000, httpOnly: false, path : '/'});
-              req.session.user = user;
-              res.status(200).send("Login Successful");
-
-          }
-        }
-      }
-    })
-});
-
-
-// Add users
-router.route('/signup').post(function (req, res) {
-  console.log("In Signup Post");
-  email = req.body.email.toLowerCase();
-  trimemail = email.trim();
-  var year = new Date();
-  
-  var encryptedString = encrypt(req.body.password);
-
+// Add Property
+router.route('/owner/listproperty').post(function (req, res) {
+  console.log("In Owner Property Post");
+  console.log(req.body.listedBy);
   var userData = {
-    "firstname": req.body.firstname,
-    "lastname": req.body.lastname,
-    "email": trimemail,
-    "password": encryptedString,
-    "created": year
+    listedBy: req.body.listedBy,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    streetAddress: req.body.streetAddress,
+    city: req.body.city,
+    state: req.body.state,
+    country: req.body.country,
+    zipcode: req.body.zipcode,
+    headline: req.body.headline,
+    description: req.body.description,
+    propertyType: req.body.propertyType,
+    bedrooms: req.body.bedrooms,
+    sleeps: req.body.sleeps,
+    bathrooms: req.body.bathrooms,
+    baseRate: req.body.baseRate,
+    currency: req.body.currency,
+    minStay: req.body.minStay,
+    amenities: req.body.amenities,
   }
 
-  pool.query('SELECT * FROM homeaway WHERE email = ?', [trimemail], (err, rows, fields) => {
-    if (err){
-          console.log("unable to read the database");
-          res.status(400).send("unable to read the database");
+  pool.query('INSERT INTO property SET ?',userData, function (error) {
+    if (error) {
+      console.log(error);
+      console.log("unable to insert into database");
+      res.status(400).send("unable to insert into database");
     } else {
-      if (rows.length > 0) {
-        console.log("User already exists");
-        res.status(400).send("User already exists");
-      } else {
-          pool.query('INSERT INTO homeaway SET ?',userData, function (error, results, fields) {
-            if (err) {
-              console.log("unable to insert into database");
-              res.status(400).send("unable to insert into database");
-            } else {
-              res.status(200).send("User Added");
-              console.log("User Added");
-            }
-          });
-        }
-      }
-    })
+      res.status(200).send("Property Added");
+      console.log("Property Added");
+    }
+  });    
 });
 
 module.exports = router;

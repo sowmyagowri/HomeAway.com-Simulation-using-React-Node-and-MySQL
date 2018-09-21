@@ -12,7 +12,7 @@ class Profile extends Component{
         //Call the constrictor of Super class i.e The Component
         super(props);
         //maintain the state required for this component
-        this.state = { profiledata : [] };
+        this.state = { profiledata : [], year : "" };
 
         //Bind the handlers to this class
         this.firstnameChangeHandler  = this.firstnameChangeHandler.bind(this);
@@ -44,8 +44,10 @@ class Profile extends Component{
                         )
                         this.refs.myfirstname.value = this.state.profiledata[0].firstname;
                         this.state.firstname = this.state.profiledata[0].firstname;
+                        console.log(this.state.firstname);
                         this.refs.mylastname.value = this.state.profiledata[0].lastname;
                         this.state.lastname = this.state.profiledata[0].lastname;
+                        this.state.year = this.state.profiledata[0].created;
                     }
                 })
                 .catch(err => {
@@ -155,7 +157,7 @@ class Profile extends Component{
                 <Navbar>
                     <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/home" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
+                        <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
                     </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>
@@ -163,7 +165,8 @@ class Profile extends Component{
                 <div class="image "></div>
                 <div id = "profilehref" class="myprofilecontainer">
                     <div class="login-form">
-                        <h2><small>Profile Information</small></h2>
+                        <h1>{cookie.load('cookie3')}</h1>
+                        <h1><small>Profile Information</small></h1>
                         <br></br>
                             <div class="form-group">
                                     <input ref = "myfirstname" onChange = {this.firstnameChangeHandler} type="text" class="form-control" name="firstname" placeholder="First Name" required/>

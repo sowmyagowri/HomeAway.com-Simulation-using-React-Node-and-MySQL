@@ -4,10 +4,10 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import './OwnerLogin.css';
-import './bootstrap-social.css';
+import {Navbar} from "react-bootstrap";
 
 //Define a Login Component
-class OwnerLogin extends Component{
+class Login extends Component{
     //call the constructor method
     constructor(props){
         //Call the constrictor of Super class i.e The Component
@@ -57,7 +57,7 @@ class OwnerLogin extends Component{
             formIsValid = false;
             alert("Password is a Required field");
             console.log("Password cannot be empty");
-         }
+        }
         
        return formIsValid;
    }
@@ -76,7 +76,7 @@ class OwnerLogin extends Component{
             //set the with credentials to true
             axios.defaults.withCredentials = true;
             //make a post request with the user data
-            axios.post('http://localhost:3001/homeaway/owner/login',data)
+            axios.post('http://localhost:3001/owner/login',data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200){
@@ -95,12 +95,20 @@ class OwnerLogin extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(cookie.load('cookie')){
-            redirectVar = <Redirect to= "/home"/>
+        if(cookie.load('cookie1')){
+            redirectVar = <Redirect to= "/"/>
         }
         return(
             <div>
                 {redirectVar}
+                <Navbar>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
+                        </Navbar.Brand>
+                    </Navbar.Header>
+                    <img src={require('./logo.png')} alt="Homeaway Logo"/>
+                </Navbar>
                 <div class="container">
                 <p></p>
                 </div>
@@ -119,13 +127,15 @@ class OwnerLogin extends Component{
                 <div class="container">
                 <p></p>
                 </div>
-                <div class="col-md-6" >
-                <img src="../../banner.png" width="700" height="500" class="img-rounded" alt="Cinque Terre"></img>
+                <div class="center">
+                    <div id="yourdiv">
+                        <h1 class="display-5">Log in to HomeAway</h1>
+                        <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
+                    </div>
                 </div>
-                <div class="row">
-                <div class="col-md-6 col-sm-6" style={{padding:" right 5px"}}>
+                <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                 <div class="login-form">
-                    <h2><small>Owner Login</small></h2>  
+                    <h2>Account Login</h2>  
                     <hr width="98%"></hr>         
                     <br></br>
                             <div class="form-group">
@@ -138,28 +148,32 @@ class OwnerLogin extends Component{
                             <br></br>
                             <br></br>
                             <div>
-                            <button onClick = {this.submitLogin} class="btn btn-warning" >Log In</button>
+                            <button onClick = {this.submitLogin} class="btn btn-warning" style={{width:"100%"}} >Log In</button>
                             </div>
                             <br></br>
-                            <input type="checkbox" name="signedin" value="signedin"/> Keep me signed in<br></br>
                             <div class="mydiv">
+                                <span class="myspan">or</span>
                             </div>
                             <br></br>
-                            <h4 align="center"><small>	Want to list your property? <a class="bg-default" href="#">Learn More</a></small></h4>
+                            <button class="mybtn facebook_button">Log in with Facebook</button>
+                            <br></br>
+                            <button className="mybtn google_button" style = {{marginTop : "20px", marginBottom : "20px", color: "#787878", background: "#f3f3f3 url(google_logo.png) left no-repeat"}}>Log in with Google</button>
+                            <br></br>
+                            <font size="2">We don't post anything without your permission.</font>
+                            <br></br>
                             <br></br>
                     </div>
-                </div>
+                
                 </div>
                 <br></br>
                 <div class="center" id= "yourdiv">
                 <font size="1">Use of this Web site constitutes acceptance of the HomeAway.com Terms and Conditions and Privacy Policy.
                     <br></br>
                     ©2018 HomeAway. All rights reserved.</font>
-                </div>
-           
+                    </div>
             </div>
         )
     }
 }
 //export Login Component
-export default OwnerLogin;
+export default Login;
