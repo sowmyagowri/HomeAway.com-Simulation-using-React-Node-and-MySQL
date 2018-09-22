@@ -129,14 +129,12 @@ render(){
       if(!cookie.load('ownercookie')){
           redirectVar = <Redirect to = "/owner/login"/>
       }
-
   return(
     <div>
-    
       <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
+              <a href="#" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
             </Navbar.Brand>
           </Navbar.Header>
         <div>
@@ -148,7 +146,12 @@ render(){
            </div>
            <img src={require('./logo.png')} alt="Homeaway Logo"/>
         </div>
-        
+        <img src="inbox.png"/>
+             <button className="btn" style = {{marginLeft : "10px",backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button">Help</button>
+              <button className="btn btn-primary" style = {{color: "white", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#D3D3D3"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
+              <a href="/owner/login">List your Property</a>
+              </button>
+              <img src={require('./logo.png')} alt="Homeaway Logo"/>
       </Navbar>
        <div className="container" style = {{fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", marginTop : "50px"}}>
        <div className="row">

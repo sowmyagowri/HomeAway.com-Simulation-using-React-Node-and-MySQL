@@ -149,7 +149,7 @@ class Profile extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(!cookie.load('cookie1')){
+        if(!cookie.load('travellercookie')){
             redirectVar = <Redirect to= "/"/>
         }
         return(

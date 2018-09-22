@@ -12,15 +12,24 @@
     background-image: none !important;
   }
 
+  .navbar.navbar-default >.container{
+    margin-left : 0px;
+    margin-right: 0px;
+    max-width: 1800px;
+ }
+
   .btn {
     height:20px;
-	width:50px;
+	  width:100px;
   }
 
-  .white {
+  a.white {
     color:white !important;
   }
 
+  button.white{
+    color: white;
+  }
 .dropdown-toggle{
     width: 10px;
 }

@@ -7,7 +7,7 @@ import {Navbar} from "react-bootstrap";
 import './OwnerLogin.css';
 
 //Define a Login Component
-class Login extends Component{
+class TravellerLogin extends Component{
     //call the constructor method
     constructor(props){
         //Call the constrictor of Super class i.e The Component
@@ -83,10 +83,11 @@ class Login extends Component{
                         this.setState({
                             authFlag : true
                         })
-                    }else{
+                    } else {
                         this.setState({
                             authFlag : false
                         })
+                        alert ("User ID does not exist or password does not match")
                     }
                 });
         }
@@ -95,6 +96,7 @@ class Login extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
+        console.log(cookie.load('cookie1'));
         if(cookie.load('cookie1')){
             redirectVar = <Redirect to= "/"/>
         }
@@ -177,4 +179,4 @@ class Login extends Component{
     }
 }
 //export Login Component
-export default Login;
+export default TravellerLogin;

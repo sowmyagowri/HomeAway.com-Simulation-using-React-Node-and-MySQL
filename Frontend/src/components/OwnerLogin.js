@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import './OwnerLogin.css';
 import {Navbar} from "react-bootstrap";
+import './OwnerLogin.css';
 
 //Define a Login Component
-class Login extends Component{
+class OwnerLogin extends Component{
     //call the constructor method
     constructor(props){
         //Call the constrictor of Super class i.e The Component
@@ -76,7 +76,7 @@ class Login extends Component{
             //set the with credentials to true
             axios.defaults.withCredentials = true;
             //make a post request with the user data
-            axios.post('http://localhost:3001/owner/login',data)
+            axios.post('http://localhost:3001/homeaway/owner/login',data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200){
@@ -105,10 +105,10 @@ class Login extends Component{
                     <Navbar.Header>
                         <Navbar.Brand>
                             <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
-                        </Navbar.Brand>
+                        </Navbar.Brand> 
                     </Navbar.Header>
                     <img src={require('./logo.png')} alt="Homeaway Logo"/>
-                </Navbar>
+                </Navbar>  
                 <div class="container">
                 <p></p>
                 </div>
@@ -133,6 +133,7 @@ class Login extends Component{
                         <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
                     </div>
                 </div>
+                <div class="container">
                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                 <div class="login-form">
                     <h2>Account Login</h2>  
@@ -163,17 +164,17 @@ class Login extends Component{
                             <br></br>
                             <br></br>
                     </div>
-                
+                </div>
                 </div>
                 <br></br>
                 <div class="center" id= "yourdiv">
-                <font size="1">Use of this Web site constitutes acceptance of the HomeAway.com Terms and Conditions and Privacy Policy.
-                    <br></br>
-                    ©2018 HomeAway. All rights reserved.</font>
-                    </div>
+                    <font size="1">Use of this Web site constitutes acceptance of the HomeAway.com Terms and Conditions and Privacy Policy.
+                        <br></br>
+                        ©2018 HomeAway. All rights reserved.</font>
+                </div>
             </div>
         )
     }
 }
 //export Login Component
-export default Login;
+export default OwnerLogin;

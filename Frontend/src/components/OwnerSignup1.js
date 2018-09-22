@@ -4,8 +4,8 @@ import {Redirect} from 'react-router';
 import './OwnerLogin.css';
 import {Navbar} from "react-bootstrap";
 
-//Define a Signup1 Component
-class Signup1 extends Component{
+//Define a Owner Signup1 Component
+class OwnerSignup1 extends Component{
     //call the constructor method
     constructor(props){
         //Call the constrictor of Super class i.e The Component
@@ -57,7 +57,7 @@ class Signup1 extends Component{
                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                         <div class="login-form">
                             <br></br>
-                            <a href="/signup2"><button class="btn btn-warning" style={{width:"100%"}}>Sign Up with Email</button></a>
+                            <a href="/owner/signup2"><button class="btn btn-warning" style={{width:"100%"}}>Sign Up with Email</button></a>
                             <br></br>
                             <div class="mydiv">
                                 <span class="myspan">or</span>
@@ -87,5 +87,5 @@ class Signup1 extends Component{
         )
     }
 }
-//export Signup1 Component
-export default Signup1;
+//export Owner Signup1 Component
+export default OwnerSignup1;

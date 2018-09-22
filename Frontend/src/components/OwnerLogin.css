@@ -3,6 +3,12 @@ body{
     color: #353e44;
     background-color: #f4f4f4;
   }
+
+  .navbar.navbar-default >.container{
+    margin-left : 0px;
+    margin-right: 0px;
+    max-width: 1800px;
+ }
   
   .center {
       margin-left: auto;
