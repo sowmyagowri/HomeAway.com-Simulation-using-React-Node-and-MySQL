@@ -24,7 +24,7 @@ class OwnerSignup1 extends Component{
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="/" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <img src={require('./logo.png')} alt="Homeaway Logo"/>

@@ -115,11 +115,11 @@ class Home extends Component {
 
   render(){
     let redirectVar = null;
-    //if(cookie.load('cookie1')){
-      //this.state.isTravelerLoggedIn = true
-    //} else {
-      //redirectVar = <Redirect to = "/"/>
-    //}
+    if(cookie.load('cookie1')){
+      this.state.isTravelerLoggedIn = true
+    } else {
+      redirectVar = <Redirect to = "/"/>
+    }
     return(
       <div style={{height:"800px", backgroundImage: this.state.backgroundImage}}>
       {redirectVar}
@@ -132,13 +132,14 @@ class Home extends Component {
           <div>
             <img src={require('./us_flag.png')}/>
             <button className="btn" style = {{fontColor : "#0067db", backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button">Trip Boards</button>
+            {console.log(this.state.isTravelerLoggedIn )}
             {!this.state.isTravelerLoggedIn 
               ?
               (
                 <div className="btn btn-group">
-                  <button className="dropdown-toggle white" style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" aria-haspopup="true" aria-expanded="true">Login</button>
+                  <button id="white" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Login</button>
                   <div className="dropdown-menu">
-                    <a className="dropdown-item" href="/login">Traveller Login</a>
+                    <a className="dropdown-item" href="/traveller/login">Traveller Login</a>
                     <a className="dropdown-item" href="/owner/login">Owner Login</a>
                   </div>
                 </div>
@@ -146,11 +147,11 @@ class Home extends Component {
                 :
                 (
                 <div className="btn btn-group">
-                  <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
+                  <button id="white" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                   <div className="dropdown-menu">
                     <a className="dropdown-item" href="/Profile">Profile</a>
                     <a className="dropdown-item" href="/MyTrips">My Trips</a>
-                    <a className="dropdown-item" onClick= {this.logout}>Logout</a>
+                    <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
                   </div>
                 </div>
                 )

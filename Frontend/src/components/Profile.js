@@ -28,6 +28,14 @@ class Profile extends Component{
         this.saveChanges = this.saveChanges.bind(this);
     }
 
+    logout = () => {
+        cookie.remove('cookie1', {path: '/'})
+        cookie.remove('cookie2', {path: '/'})
+        cookie.remove('cookie3', {path: '/'})
+        console.log("All cookies removed!")
+        window.location = "/"
+    }
+
     componentDidMount(){
         var input_email = cookie.load('cookie2');
         console.log(input_email);
@@ -149,19 +157,50 @@ class Profile extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(!cookie.load('travellercookie')){
+        console.log(cookie.load('cookie1'))
+        if(!cookie.load('cookie1')){
             redirectVar = <Redirect to= "/"/>
         }
         return(
             <div>
-                <Navbar>
+                {redirectVar}
+                <Navbar inverse collapseOnSelect>
                     <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
-                    </Navbar.Brand>
+                        <Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
+                        </Navbar.Brand> 
                     </Navbar.Header>
+                    <div>
+                        {(cookie.load('cookie1') === 'travellercookie') 
+                        ?
+                        (
+                        <div className="btn btn-group">
+                            <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
+                            <div className="dropdown-menu">
+                            <a className="dropdown-item" href="/">Book My Trip</a>
+                                <a className="dropdown-item" href="/MyTrips">My Trips</a>
+                                <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
+                            </div>
+                        </div>
+                        )
+                        :
+                        (
+                        <div className="btn btn-group">
+                            <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
+                            <div className="dropdown-menu">
+                                <a className="dropdown-item" href="/owner/propertypost">Post Property</a>
+                                <a className="dropdown-item" href="/MyListing">My Listings</a>
+                                <a className="dropdown-item" onClick = {this.logout}>Logout</a>
+                            </div>
+                        </div>
+                        )
+                    }
+                    <img src={require('./logo.png')} alt="Homeaway Logo"/>
+                    </div>
                 </Navbar>
-            
+                <div class="container">
+                <p></p>
+                </div>
                 <div class="image "></div>
                 <div id = "profilehref" class="myprofilecontainer">
                     <div class="login-form">
@@ -270,13 +309,6 @@ class Profile extends Component{
                         </div>
                         <br/>
                         </div>
-
-                <div id = "tripshref">
-                    <div class="login-form">
-                        <h2><small>My Trip Information</small></h2>
-                    </div>    
-                </div>
-
             </div>
         )
     }

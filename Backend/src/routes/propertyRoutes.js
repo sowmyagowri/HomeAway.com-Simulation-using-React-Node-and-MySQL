@@ -26,7 +26,8 @@ router.route('/owner/listproperty').post(function (req, res) {
     minStay: req.body.minStay,
     amenities: req.body.amenities,
   }
-
+  console.log(startDate);
+  console.log(endDate);
   pool.query('INSERT INTO property SET ?',userData, function (error) {
     if (error) {
       console.log(error);

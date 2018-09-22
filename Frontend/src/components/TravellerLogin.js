@@ -132,7 +132,7 @@ class TravellerLogin extends Component{
                 <div class="center">
                     <div id="yourdiv">
                         <h1 class="display-5">Log in to HomeAway</h1>
-                        <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
+                        <h2><small>Need an account? <a class="bg-default" href="/traveller/signup1">Sign Up</a></small></h2>
                     </div>
                 </div>
                 <div class="container">

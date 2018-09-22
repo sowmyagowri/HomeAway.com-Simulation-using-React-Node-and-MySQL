@@ -19,16 +19,21 @@
  }
 
   .btn {
-    height:20px;
-	  width:100px;
-  }
-
-  a.white {
-    color:white !important;
-  }
-
-  button.white{
+    height:40px;
+    width:200px;
     color: white;
+  }
+  
+  .btn:hover{
+    background-color: #0067db !important;
+  }
+
+  .dropdown-item:hover{
+    background-color: #0067db !important;
+  }
+
+  #white{
+    color: white !important;
   }
 .dropdown-toggle{
     width: 10px;

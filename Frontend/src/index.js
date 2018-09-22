@@ -27,8 +27,8 @@ ReactDOM.render(
           <PropertySearchResults {...props} propDummy={50} />
         )} />
         <Route path='/traveller/login' component={TravellerLogin} />
-        <Route path='/signup1' component={Signup1} />
-        <Route path='/signup2' component={Signup2} />
+        <Route path='/traveller/signup1' component={Signup1} />
+        <Route path='/traveller/signup2' component={Signup2} />
         <Route path='/Profile' component={Profile} />
         <Route path='/owner/login' component={OwnerLogin} />
         <Route path='/owner/signup1' component={OwnerSignup1} />

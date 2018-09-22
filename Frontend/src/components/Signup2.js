@@ -152,6 +152,7 @@ class Signup2 extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
+        console.log(cookie.load('cookie1'))
         cookie.load('cookie1');
         if(this.state.authFlag){
             redirectVar = <Redirect to= "/"/>

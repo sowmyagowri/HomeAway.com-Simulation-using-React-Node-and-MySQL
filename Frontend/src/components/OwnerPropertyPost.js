@@ -4,7 +4,6 @@ import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import './OwnerPropertyPost.css';
 import {Navbar} from "react-bootstrap";
-import DatePicker from 'react-date-picker';
 
 //Define a OwnerPropertyPost Component
 class OwnerPropertyPost extends Component{
@@ -12,6 +11,7 @@ class OwnerPropertyPost extends Component{
   constructor(props){
     super(props);
       this.state =  {
+      isOwnerLoggedIn: false,
       name: cookie.load('cookie3'),
       startDate: new Date(),
       endDate: new Date(),
@@ -85,8 +85,11 @@ startDateChangeHandler = date => this.setState({ startDate: date })
 endDateChangeHandler = date => this.setState({ endDate: date })
 
 logout = () => {
-  cookie.remove('ownercookie', {path: '/'})
-  window.streetAddress = "/"
+  cookie.remove('cookie1', {path: '/'})
+  cookie.remove('cookie2', {path: '/'})
+  cookie.remove('cookie3', {path: '/'})
+  console.log("All cookies removed!")
+  window.location = "/"
 }
 
 addProperty = (e) => {
@@ -126,11 +129,16 @@ axios.post('http://localhost:3001/homeaway/owner/listproperty', data)
 }
 render(){
   let redirectVar = null;
-      if(!cookie.load('ownercookie')){
-          redirectVar = <Redirect to = "/owner/login"/>
+  console.log(cookie.load('cookie1'))
+      if(!cookie.load('cookie1')){
+          redirectVar = <Redirect to = "/"/>
+      }
+      else{
+        this.state.isOwnerLoggedIn = true
       }
   return(
     <div>
+      {redirectVar}
       <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
@@ -141,17 +149,13 @@ render(){
            <div className="btn btn-group">
              <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {this.state.name}</button>
              <div className="dropdown-menu">
-               <a className="dropdown-item" onClick = {this.logout}>Logout</a>
+                <a className="dropdown-item" href="/Profile">Profile</a>
+                <a className="dropdown-item" href="/MyListing">My Listings</a>
+                <a className="dropdown-item" onClick = {this.logout}>Logout</a>
              </div>
            </div>
            <img src={require('./logo.png')} alt="Homeaway Logo"/>
         </div>
-        <img src="inbox.png"/>
-             <button className="btn" style = {{marginLeft : "10px",backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button">Help</button>
-              <button className="btn btn-primary" style = {{color: "white", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#D3D3D3"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
-              <a href="/owner/login">List your Property</a>
-              </button>
-              <img src={require('./logo.png')} alt="Homeaway Logo"/>
       </Navbar>
        <div className="container" style = {{fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", marginTop : "50px"}}>
        <div className="row">

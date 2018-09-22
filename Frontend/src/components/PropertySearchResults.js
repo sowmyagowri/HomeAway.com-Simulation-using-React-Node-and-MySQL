@@ -74,8 +74,9 @@ class PropertySearchResults extends Component {
             if(response.status === 200){
                 console.log(response.data)
                 this.setState({
-                    profiledata : response.data
+                    searchData : response.data
                 });
+                console.log(this.state.searchData);
             }
         });
     }

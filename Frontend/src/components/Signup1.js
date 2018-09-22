@@ -15,6 +15,7 @@ class Signup1 extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
+        console.log(cookie.load('cookie1'))
         if(cookie.load('cookie1')){
             redirectVar = <Redirect to= "/"/>
         }
@@ -57,7 +58,7 @@ class Signup1 extends Component{
                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                         <div class="login-form">
                             <br></br>
-                            <a href="/signup2"><button class="btn btn-warning" style={{width:"100%"}}>Sign Up with Email</button></a>
+                            <a href="/traveller/signup2"><button class="btn btn-warning" style={{width:"100%"}}>Sign Up with Email</button></a>
                             <br></br>
                             <div class="mydiv">
                                 <span class="myspan">or</span>

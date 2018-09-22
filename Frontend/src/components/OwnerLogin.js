@@ -80,14 +80,15 @@ class OwnerLogin extends Component{
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200){
+                        console.log("Owner login succesful");
                         this.setState({
                             authFlag : true
                         })
-                    }else{
-                        this.setState({
-                            authFlag : false
-                        })
                     }
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert ("Login unsuccesful")
                 });
         }
     }
@@ -95,8 +96,9 @@ class OwnerLogin extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
+        console.log(cookie.load('cookie1'));
         if(cookie.load('cookie1')){
-            redirectVar = <Redirect to= "/"/>
+            redirectVar = <Redirect to= "/owner/propertypost"/>
         }
         return(
             <div>
@@ -130,7 +132,7 @@ class OwnerLogin extends Component{
                 <div class="center">
                     <div id="yourdiv">
                         <h1 class="display-5">Log in to HomeAway</h1>
-                        <h2><small>Need an account? <a class="bg-default" href="/signup1">Sign Up</a></small></h2>
+                        <h2><small>Need an account? <a class="bg-default" href="/owner/signup1">Sign Up</a></small></h2>
                     </div>
                 </div>
                 <div class="container">
