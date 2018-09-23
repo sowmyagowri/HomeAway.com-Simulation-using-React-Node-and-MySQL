@@ -23,12 +23,12 @@ class OwnerPropertyPost extends Component{
       country: "",
       zipcode: 0,
       description: "",
-      propertyType: "",
+      propertyType: "Family Home",
       amenities : "",
       bedrooms: 0,
       bathrooms: 0,
       minStay : 0,
-      currency: "",
+      currency: "USD",
       baseRate : 0,
       };
       this.logout = this.logout.bind(this);
@@ -81,8 +81,9 @@ sleepsChangeHandler =  (e) =>{this.setState ({sleeps : e.target.value})}
 
 currencyChangeHandler =  (e) =>{this.setState ({currency : e.target.value})}
 
-startDateChangeHandler = date => this.setState({ startDate: date })
-endDateChangeHandler = date => this.setState({ endDate: date })
+startDateChangeHandler = (e) => this.setState ({ startDate:  e.target.value })
+
+endDateChangeHandler = (e) => this.setState ({ endDate:  e.target.value })
 
 logout = () => {
   cookie.remove('cookie1', {path: '/'})
@@ -94,8 +95,9 @@ logout = () => {
 
 addProperty = (e) => {
   console.log("In Add Property");
+  console.log(this.state.startDate);
   var data = {
-    listedBy: 'gsowmya@gmail.com',
+    listedBy: cookie.load('cookie2'),
     startDate: this.state.startDate,
     endDate: this.state.endDate,
     streetAddress: this.state.streetAddress,
@@ -244,6 +246,9 @@ render(){
                                      <div className="form-group col-md-3">
                                        <input id="zipcode" name="zipcode" onChange = {this.zipcodeChangeHandler} value = {this.state.zipcode} placeholder="Zip Code" className="form-control" required="required" type="text"/>
                                      </div>
+                                     <div className="form-group col-md-3">
+                                       <input id="country" name="country" onChange = {this.countryChangeHandler} value = {this.state.country} placeholder="Country" className="form-control" required="required" type="text"/>
+                                     </div>
                                      </div>
                                    </div>
                                  </div>
@@ -277,7 +282,7 @@ render(){
                                         </div>
                                       </div>
                                       <div className="form-group">
-                                        <label htmlFor="textarea" className="control-label col-xs-4">Property Information:</label>
+                                        <label htmlFor="textarea" className="control-label col-xs-4">Amenities:</label>
                                         <div className="col-xs-8">
                                           <textarea id="textarea" placeholder= "Amenities" onChange = {this.amenitiesChangeHandler} value = {this.state.amenities} name="textarea" cols="40" rows="3" className="form-control"></textarea>
                                         </div>
@@ -312,7 +317,7 @@ render(){
                                              <i className="fa fa-inr"></i>
                                            </div>
                                            <div className="select form-control">
-                                           <input onChange = {this.bedroomChangeHandler} value={this.state.bedroom}  type="number" step = "any"/> </div>
+                                           <input onChange = {this.bedroomsChangeHandler} value={this.state.bedrooms}  type="number" min = "0"/> </div>
                                          </div>
                                        </div>
                                        </div>
@@ -324,7 +329,7 @@ render(){
                                              <i className="fa fa-inr"></i>
                                            </div>
                                            <div className="select form-control">
-                                           <input onChange = {this.sleepsChangeHandler} value={this.state.sleeps} type="number" step = "any" min = '1'/></div>
+                                           <input onChange = {this.sleepsChangeHandler} value={this.state.sleeps} type="number" min = '1'/></div>
                                          </div>
                                        </div>
                                        </div>
@@ -338,7 +343,7 @@ render(){
                                                <i className="fa fa-inr"></i>
                                              </div>
                                              <div className="select form-control">
-                                             <input onChange = {this.bathroomChangeHandler} value={this.state.bathroom} type="number" step = "any"/> </div>
+                                             <input onChange = {this.bathroomsChangeHandler} value={this.state.bathrooms} type="number" min = "0"/> </div>
                                            </div>
                                          </div>
                                          </div>
@@ -424,7 +429,7 @@ render(){
                                        <div className="form-group">
                                        <h2>Minimum Stay</h2>
                                        <hr/>
-                                       <input onChange = {this.minStayChangeHandler} value = {this.state.minStay} className="form-control" id="minStay" type="number" step = "any" min = '1'/>Night
+                                       <input onChange = {this.minStayChangeHandler} value = {this.state.minStay} className="form-control" id="minStay" type="number" min = '1'/>Night
                                        </div>
                                      </form>
                                   </div>

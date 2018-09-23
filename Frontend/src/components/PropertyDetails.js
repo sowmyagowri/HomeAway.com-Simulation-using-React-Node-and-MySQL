@@ -5,27 +5,17 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Navbar} from "react-bootstrap";
 
-class PropertySearchResults extends Component {
+class PropertyDetails extends Component {
     
     constructor(props){
         super(props);
         console.log("Parameters are: ");
-        console.log(this.props.history);
+        console.log(this.props.match.params.propertyID);
         this.state = {
             email: "",
-            location: this.props.location.state.location,
-            noOfGuests: this.props.location.state.noOfGuests,
-            arrivalDate: this.props.location.state.fromDate,
-            leaveDate: this.props.location.state.toDate,
             isTravelerLoggedIn: false,
         };
-        this.locationChangeHandler = this.locationChangeHandler.bind(this);
-        this.fromDateChangeHandler = this.fromDateChangeHandler.bind(this);
-        this.toDateChangeHandler = this.toDateChangeHandler.bind(this);
-        this.noOfGuestsChangeHandler = this.noOfGuestsChangeHandler.bind(this);
-        this.handleValidation = this.handleValidation.bind(this);
         this.searchPlace = this.searchPlace.bind(this);
-       // this.openPage = this.openPage.bind(this);
         this.logout = this.logout.bind(this);
     }
 
@@ -66,7 +56,6 @@ class PropertySearchResults extends Component {
                 this.refs.address1.value = this.state.searchData[0].streetAddress;
                 this.refs.city1.value = this.state.searchData[0].city;
                 this.refs.state1.value = this.state.searchData[0].state;
-                var propertyID = this.state.searchData[0].uid;
             }
         });
     }
@@ -187,23 +176,9 @@ class PropertySearchResults extends Component {
         }
     }
 
-    //Open the property details in a new page
-    //openPage(event) {
-      //  console.log("Inside Open new page");
-        //prevent page from refresh
-        //event.preventDefault();
-        //this.props.history.push({
-          //  pathname: '/property/searchresult',
-            //state: { location: this.state.search, 
-              //      fromDate: this.state.fromDate,
-                //    toDate: this.state.toDate,
-                  //  noOfGuests: this.state.noOfGuests,
-                    //propertyID: this.state.searchData[0].uid}
-       // })
-   // }
-
     render(){
         
+        let redirectVar = null;
         if(cookie.load('cookie1')){
             this.state.isTravelerLoggedIn = true
         }
@@ -216,6 +191,7 @@ class PropertySearchResults extends Component {
 
         return(
           <div>
+              {redirectVar}
                 <Navbar>
                 <Navbar.Header>
                     <Navbar.Brand>
@@ -311,7 +287,7 @@ class PropertySearchResults extends Component {
                                 <input id = "city" ref = "city1" type="text" readonly="readonly" />
                                 <input id = "state" ref = "state1" type="text" readonly="readonly" />
                                 <br></br>
-                                <a class = "view" href="/property/:propertyID" target="_blank">Dummy Link</a>
+                                <a class = "view" href="/property/details" target="_blank">Dummy Link</a>
                             </div>
                             </div>
                           </div>
@@ -323,4 +299,4 @@ class PropertySearchResults extends Component {
         )
     }
 }
-export default PropertySearchResults;
+export default PropertyDetails;

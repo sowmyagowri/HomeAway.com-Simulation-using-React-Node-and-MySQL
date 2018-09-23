@@ -66,7 +66,7 @@ class Signup2 extends Component{
             alert("First Name is a Required field");
             console.log("First Name cannot be empty");
         } else if(typeof this.state.firstname !== "undefined"){
-            if(!this.state.firstname.match(/^[a-zA-Z]+$/)){
+            if(!this.state.firstname.match(/^[a-zA-Z ]+$/)){
                 formIsValid = false;
                 alert("First Name cannot contain numbers");
                 console.log("First Name cannot contain numbers");
@@ -78,7 +78,7 @@ class Signup2 extends Component{
             alert("Last Name is a Required field");
             console.log("Last Name cannot be empty");
          } else if(typeof this.state.lastname !== "undefined"){
-            if(!this.state.lastname.match(/^[a-zA-Z]+$/)){
+            if(!this.state.lastname.match(/^[a-zA-Z ]+$/)){
                 formIsValid = false;
                 alert("Last Name cannot contain numbers");
                 console.log("Last Name cannot contain numbers");

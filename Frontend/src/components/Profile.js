@@ -39,7 +39,6 @@ class Profile extends Component{
     componentDidMount(){
         var input_email = cookie.load('cookie2');
         console.log(input_email);
-        input_email = 'gsowmya@gmail.com';
         const data = { email : input_email }
         axios.post('http://localhost:3001/homeaway/profile', data)
                 .then(response => {
@@ -52,10 +51,9 @@ class Profile extends Component{
                         )
                         this.refs.myfirstname.value = this.state.profiledata[0].firstname;
                         this.state.firstname = this.state.profiledata[0].firstname;
-                        console.log(this.state.firstname);
                         this.refs.mylastname.value = this.state.profiledata[0].lastname;
                         this.state.lastname = this.state.profiledata[0].lastname;
-                        this.state.year = this.state.profiledata[0].created;
+                        this.refs.createdyear.value = this.state.profiledata[0].created;
                     }
                 })
                 .catch(err => {
@@ -118,7 +116,6 @@ class Profile extends Component{
             console.log("Profile Form data submitted");
             var input_email = cookie.load('cookie2');
             console.log(input_email);
-            input_email = 'gsowmya@gmail.com';
             const data = {
                 firstname : this.state.firstname,
                 lastname : this.state.lastname,
@@ -205,6 +202,7 @@ class Profile extends Component{
                 <div id = "profilehref" class="myprofilecontainer">
                     <div class="login-form">
                         <h1>{cookie.load('cookie3')}</h1>
+                        <h2><small>Member since  <input id = "year" ref = "createdyear" type="text" readonly="readonly" /> </small></h2>
                         <h1><small>Profile Information</small></h1>
                         <br></br>
                             <div class="form-group">

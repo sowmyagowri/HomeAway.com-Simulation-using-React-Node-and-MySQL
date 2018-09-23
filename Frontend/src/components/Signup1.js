@@ -25,11 +25,11 @@ class Signup1 extends Component{
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="/" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
-                        </Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
+                        </Navbar.Brand> 
                     </Navbar.Header>
                     <img src={require('./logo.png')} alt="Homeaway Logo"/>
-                </Navbar>
+                </Navbar>  
                 <div class="container">
                 <p></p>
                 </div>

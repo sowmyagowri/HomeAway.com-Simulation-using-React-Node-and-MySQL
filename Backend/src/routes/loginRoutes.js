@@ -81,9 +81,11 @@ router.route('/owner/login').post(function (req, res) {
 // Add traveller users
 router.route('/traveller/signup').post(function (req, res) {
   console.log("In traveller Signup Post");
+  console.log(req.body);
   email = req.body.email.toLowerCase();
   trimemail = email.trim();
-  var year = new Date();
+  var today = new Date();
+  var year = today.getFullYear();
   
   var encryptedString = encrypt(req.body.password);
 
@@ -106,16 +108,16 @@ router.route('/traveller/signup').post(function (req, res) {
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        pool.query('INSERT INTO users SET ?',userData, function (err) {
+        pool.query('INSERT INTO users SET ?',userData, function (err,rows) {
         if (err) {
           console.log("unable to insert into database");
           res.status(400).send("unable to insert into database");
         } else {
-          res.status(200).send("User Added");
           console.log("User Added");
           res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
           res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+          res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+          res.status(200).send("User Added");
         }});
       }
     }
@@ -162,7 +164,7 @@ router.route('/owner/signup').post(function (req, res) {
               console.log("Owner profile added to traveller login");
               res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-              res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+              res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
               res.status(200).send("Owner profile added to traveller login");
             }
           })

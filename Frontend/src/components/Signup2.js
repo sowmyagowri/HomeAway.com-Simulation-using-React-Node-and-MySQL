@@ -66,7 +66,7 @@ class Signup2 extends Component{
             alert("First Name is a Required field");
             console.log("First Name cannot be empty");
         } else if(typeof this.state.firstname !== "undefined"){
-            if(!this.state.firstname.match(/^[a-zA-Z]+$/)){
+            if(!this.state.firstname.match(/^[a-zA-Z ]+$/)){
                 formIsValid = false;
                 alert("First Name cannot contain numbers");
                 console.log("First Name cannot contain numbers");
@@ -78,7 +78,7 @@ class Signup2 extends Component{
             alert("Last Name is a Required field");
             console.log("Last Name cannot be empty");
          } else if(typeof this.state.lastname !== "undefined"){
-            if(!this.state.lastname.match(/^[a-zA-Z]+$/)){
+            if(!this.state.lastname.match(/^[a-zA-Z ]+$/)){
                 formIsValid = false;
                 alert("Last Name cannot contain numbers");
                 console.log("Last Name cannot contain numbers");
@@ -163,11 +163,11 @@ class Signup2 extends Component{
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="/" title = "HomeAway" className = "logo"><img src="homeaway_logo.png"/></a>
-                        </Navbar.Brand>
+                            <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')} alt="Homeaway Logo"/></a>
+                        </Navbar.Brand> 
                     </Navbar.Header>
                     <img src={require('./logo.png')} alt="Homeaway Logo"/>
-                </Navbar>
+                </Navbar>  
                 <div class="container">
                 <p></p>
                 </div>

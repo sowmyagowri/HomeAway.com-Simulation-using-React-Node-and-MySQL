@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/Home';
 import PropertySearchResults from './components/PropertySearchResults';
+import PropertyDetails from './components/PropertyDetails';
 import TravellerLogin from './components/TravellerLogin';
 import OwnerLogin from './components/OwnerLogin';
 import OwnerPropertyPost from './components/OwnerPropertyPost';
@@ -26,6 +27,7 @@ ReactDOM.render(
         <Route path='/property/searchresult' render={(props)=> (
           <PropertySearchResults {...props} propDummy={50} />
         )} />
+        <Route path='/property/:propertyID' component={PropertyDetails} />
         <Route path='/traveller/login' component={TravellerLogin} />
         <Route path='/traveller/signup1' component={Signup1} />
         <Route path='/traveller/signup2' component={Signup2} />

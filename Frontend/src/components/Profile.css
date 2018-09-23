@@ -30,3 +30,11 @@ body{
     background-size: cover;
     margin: auto
   }
+
+  #year{
+    box-shadow: inset 0px 0px 0px 0px;
+    border: none;
+    padding:0px;
+    width : 60px;
+    background-color: #f4f4f4;
+  }

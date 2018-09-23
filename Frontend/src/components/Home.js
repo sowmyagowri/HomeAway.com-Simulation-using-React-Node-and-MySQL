@@ -74,19 +74,42 @@ class Home extends Component {
         console.log("Search LOcation cannot be empty");
     }
 
+    console.log(this.state.fromDate);
     //From Date
     if(!this.state.fromDate){
+      formIsValid = false;
+      alert("From Date is a Required field");
+      console.log("From Date cannot be empty");
+    } else {
+      var CurrentDate = new Date();
+      CurrentDate.setHours(0,0,0,0);
+      var GivenfromDate = new Date(this.state.fromDate.replace(/-/g, '\/'));
+      if(GivenfromDate < CurrentDate){
+        alert('From date should be greater than the current date.');
         formIsValid = false;
-        alert("From Date is a Required field");
-        console.log("From Date cannot be empty");
-     }
+      }
+    }
 
     //To Date
     if(!this.state.toDate){
         formIsValid = false;
         alert("To Date is a Required field");
         console.log("To Date cannot be empty");
-     }
+     } else {
+      var CurrentDate = new Date();
+      CurrentDate.setHours(0,0,0,0);
+      var GiventoDate = new Date(this.state.toDate.replace(/-/g, '\/'));
+
+      if(GiventoDate < CurrentDate){
+        alert('To date should be greater than the current date.');
+        formIsValid = false;
+      } else {
+        if (GiventoDate <= GivenfromDate){
+          alert('To date should be greater than from date.');
+          formIsValid = false;
+        }
+      }
+    }
 
      //Numberof guests
     if(!this.state.guests){
@@ -157,7 +180,7 @@ class Home extends Component {
                 )
              }
               <button className="btn btn-group" style = {{color: "#fff", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#ffffff"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
-              <a href="/owner/propertypost">List your Property</a>
+              <a href="/owner/login">List your Property</a>
               </button>
               <img src={require('./homeaway_house_white.svg')} alt="Homeaway Logo"/>
           </div>
@@ -181,7 +204,7 @@ class Home extends Component {
                   </div>
                   <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                     <div className="form-group">
-                      <input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" placeholder="No of guests?" onChange = {this.guestsChangeHandler}/>
+                      <input type="number" min = "1" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" placeholder="No of guests?" onChange = {this.guestsChangeHandler}/>
                       <span className="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
                   </div>

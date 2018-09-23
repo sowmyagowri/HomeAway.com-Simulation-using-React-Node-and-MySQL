@@ -5,7 +5,6 @@ var pool = require('../models/UserDB.js');
 // Add Property
 router.route('/owner/listproperty').post(function (req, res) {
   console.log("In Owner Property Post");
-  console.log(req.body.listedBy);
   var userData = {
     listedBy: req.body.listedBy,
     startDate: req.body.startDate,
@@ -26,8 +25,6 @@ router.route('/owner/listproperty').post(function (req, res) {
     minStay: req.body.minStay,
     amenities: req.body.amenities,
   }
-  console.log(startDate);
-  console.log(endDate);
   pool.query('INSERT INTO property SET ?',userData, function (error) {
     if (error) {
       console.log(error);
@@ -42,14 +39,13 @@ router.route('/owner/listproperty').post(function (req, res) {
 
 // Search Property
 router.route('/property/search').post(function (req, res) {
-  console.log("In Property Search");
-  var sqlquery = "SELECT * from `property` where city = this.req.location.toLowerCase() and startDate = this.req.startDate and endDate = this.req.endDate and sleeps >= this.req.guests";
-  pool.query(sqlquery,function (error,result) {
+  pool.query('SELECT * from `property` where city = ? and startDate <= ?  and endDate >= ? and sleeps >= ?', [req.body.city.toLowerCase(), req.body.startDate, req.body.endDate, req.body.noOfGuests], function (error,result) {
     if (error) {
       console.log(error);
       console.log("unable to search database");
       res.status(400).send("unable to search database");
     } else {
+      console.log(JSON.stringify(result));
       res.status(200).send(JSON.stringify(result));
       console.log("Property Found");
     }
