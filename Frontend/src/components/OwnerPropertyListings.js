@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
-class PropertySearchResults extends Component {
+class OwnerPropertyListings extends Component {
     
     constructor(props){
         super(props);
@@ -17,7 +17,6 @@ class PropertySearchResults extends Component {
         this.state = {
             email: "",
             isTravelerLoggedIn: false,
-            detailsFetched:false,
             isLoading : true,
             searchData:[{}],
         };
@@ -54,7 +53,7 @@ class PropertySearchResults extends Component {
             endDate : this.props.location.state?this.props.location.state.toDate:"",
             noOfGuests: this.props.location.state?this.props.location.state.noOfGuests:""
         }
-        console.log("Calling Property Search in Will mount");
+        console.log("Calling Property Search");
         console.log(data);
         axios.post('http://localhost:3001/homeaway/property/search', data)
         .then(response => {
@@ -63,10 +62,10 @@ class PropertySearchResults extends Component {
                 console.log(response.data)
                 this.setState({
                     searchData : response.data,
-                    isLoading : false,
+                    isLoading : false
                 });
             }
-        })
+        });
     }
 
     calculateRate = (rate) => {
@@ -202,11 +201,12 @@ class PropertySearchResults extends Component {
         //prevent page from refresh
         event.preventDefault();
         if(this.handleValidation()){
+            console.log("Login Form submitted");
             const data = {
             city : this.state.location,
             startDate : this.state.fromdate,
             endDate : this.state.todate,
-            noOfGuests : this.state.noOfGuests
+            sleeps : this.state.noOfGuests
             }
         
             //set the with credentials to true
@@ -219,10 +219,10 @@ class PropertySearchResults extends Component {
                         console.log(response.data)
                         this.setState({
                             searchData : response.data,
-                            isLoading : false,
-                       });
+                            isLoading : true
+                        });
                     }
-            })
+                });
         }
     }
 
@@ -230,13 +230,6 @@ class PropertySearchResults extends Component {
         
         if(cookie.load('cookie1')){
             this.state.isTravelerLoggedIn = true
-        }
-
-        if (this.state.searchData.length == 0) {
-            this.state.detailsFetched = false 
-        }
-        else {
-            this.state.detailsFetched = true 
         }
 
         return(
@@ -311,35 +304,22 @@ class PropertySearchResults extends Component {
                </div>
             </div>
             </Navbar>
-            {this.state.detailsFetched 
-              ?
-              (
-                <div className = "container-full">
-                    <div className="container-pad">
-                        <div className="form-row ">
-                            <div className="form-group col-sm-9" id = "property-listings" style ={{maxWidth : "900px"}}>
-                                { this.generateContents() }
-                            </div>
-                            <div className = "form-group col-sm-5" style = {{width : "800px"}}>
-                                <div className = "card-body border">
-                                    <h2>ASDZAF</h2>
-                                </div>
+            <div className = "container-full">
+                <div className="container-pad">
+                    <div className="form-row ">
+                        <div className="form-group col-sm-9" id = "property-listings" style ={{maxWidth : "900px"}}>
+                            { this.generateContents() }
+                        </div>
+                        <div className = "form-group col-sm-5" style = {{width : "800px"}}>
+                            <div className = "card-body border">
+                                <h2>ASDZAF</h2>
                             </div>
                         </div>
                     </div>
-            </div>
-              )
-              :
-              (
-                <div className = "container-full">
-                    <div className="container-pad">
-                        <h1> There are no listings matching your criteria </h1>
-                    </div>
                 </div>
-              )
-            }
+          </div>
         </div>
         )
     }
 }
-export default PropertySearchResults;
+export default OwnerPropertyListings;

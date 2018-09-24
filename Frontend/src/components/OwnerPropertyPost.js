@@ -4,12 +4,18 @@ import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import './OwnerPropertyPost.css';
 import {Navbar} from "react-bootstrap";
+import ReactDropzone from "react-dropzone";
+
+const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
+const imageMaxSize = 1000000000 // bytes
 
 //Define a OwnerPropertyPost Component
 class OwnerPropertyPost extends Component{
   //call the constructor method
   constructor(props){
     super(props);
+    this.fileInputRef = React.createRef();
       this.state =  {
       isOwnerLoggedIn: false,
       name: cookie.load('cookie3'),
@@ -30,6 +36,9 @@ class OwnerPropertyPost extends Component{
       minStay : 0,
       currency: "USD",
       baseRate : 0,
+      uploadedPhotos: [],
+      uploadedPhotoLimit: 5,
+      previewuploadedPhotos: [],
       };
       this.logout = this.logout.bind(this);
       this.streetAddressChangeHandler = this.streetAddressChangeHandler.bind(this);
@@ -49,6 +58,7 @@ class OwnerPropertyPost extends Component{
       this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
       this.currencyChangeHandler = this.currencyChangeHandler.bind(this);
       this.headlineChangeHandler = this.headlineChangeHandler.bind(this);
+      this.onDrop = this.onDrop.bind(this);
       this.addProperty = this.addProperty.bind(this);
 }
 streetAddressChangeHandler =  (e) =>{this.setState ({streetAddress : e.target.value})}
@@ -115,20 +125,71 @@ addProperty = (e) => {
     currency: this.state.currency,
     minStay: this.state.minStay,
     amenities: this.state.amenities
-}
-axios.post('http://localhost:3001/homeaway/owner/listproperty', data)
-  .then(response => {
-    if(response.data) {
-      console.log("Successful post property")
-      //window.streetAddress = '/ownerdashboard'
-    } else {
-      console.log("Post Property Error")
-    }
+  }
+
+  axios.post('http://localhost:3001/homeaway/owner/listproperty', data)
+    .then(response => {
+      if(response.data) {
+        console.log("Successful post property")
+        //window.streetAddress = '/ownerdashboard'
+      } else {
+        console.log("Post Property Error")
+      }
+    })
+    .catch(function(error) {
+      console.log("Post Property Server error")
   })
-  .catch(function(error) {
-    console.log("Post Property Server error")
-})
 }
+
+verifyFile = (files) => {
+  if (files){
+      const currentFile = files;
+      const currentFileType = currentFile.type
+      const currentFileSize = currentFile.size
+      if(currentFileSize > imageMaxSize) {
+          alert("This file is not allowed. " + currentFileSize + " bytes is too large")
+          return false
+      }
+      if (!acceptedFileTypesArray.includes(currentFileType)){
+          alert("This file is not allowed. Only images are allowed.")
+          return false
+      }
+      return true
+  }
+}
+
+onDrop = (selectedFiles, rejectedFiles) => {
+  let index;
+  for (index = 0; index < selectedFiles.length; ++index) {
+    const selectedfile = selectedFiles[index];
+    const rejectedfile = rejectedFiles[index];
+    if (rejectedfile){
+      this.verifyFile(rejectedfile)
+    }
+
+    if (selectedfile){
+      const isVerified = this.verifyFile(selectedfile)
+      if (isVerified){
+        if (this.state.previewuploadedPhotos.length < this.state.uploadedPhotoLimit){
+          this.setState(({ previewuploadedPhotos }) => ({
+            previewuploadedPhotos: previewuploadedPhotos.concat(selectedfile)
+          }))
+          const reader = new FileReader();
+          reader.readAsDataURL(selectedfile);
+          reader.onload = (event) => {
+            this.setState({
+              uploadedPhotos: this.state.uploadedPhotos.concat([{ base64: event.target.result }])
+            });
+          };
+        } else {
+          console.log(this.state.previewuploadedPhotos.length);
+          alert ("You can upload a maximum of 5 images only!")
+        }
+      }
+    }
+  }
+}
+
 render(){
   let redirectVar = null;
   console.log(cookie.load('cookie1'))
@@ -181,7 +242,7 @@ render(){
                                        <input id="streetAddress" name="streetAddress" onChange = {this.streetAddressChangeHandler} value = {this.state.streetAddress} placeholder="Street Address" className="form-control" required="required" type="text"/>
                                      </div>
                                      <div className="form-group col-md-3">
-                                       <input id="city" name="city" onChange = {this.cityChangeHandler} value = {this.state.city} placeholder="City" className="form-control" required="required" type="text"/>
+                                       <input name="city" onChange = {this.cityChangeHandler} value = {this.state.city} placeholder="City" className="form-control" required="required" type="text"/>
                                      </div>
                                      <div className="form-row ">
                                      <div className="form-group col-md-9">
@@ -363,34 +424,26 @@ render(){
                          </div>
                          <div id="collapseFour" className="collapse" data-parent="#accordion">
                            <div className="card-body">
-                           <h2>Add up to 6 photos of your property</h2>
+                           <h2>Add up to 5 photos of your property</h2>
                            <hr/>
                              <div className="container">
                                <div className="row">
                                   <div className="col-md-12 border card-body">
-                                  <small>Showcase your property’s best features (no pets or people, please). Requirements: JPEG, at least 1920 x 1080 pixels, less than 20MB file size, 6 photos minimum.</small>
-                                      <div className="custom-file">
-                                       <input type="file" onChange={this.fileSelectedHandler}className="custom-file-input" id="customFile"/>
-                                       <label className="custom-file-label" htmlFor="customFile">1. Upload Photos</label>
-                                      </div>
-                                      <div className="custom-file">
-                                       <input type="file" className="custom-file-input" id="customFile"/>
-                                       <label className="custom-file-label" htmlFor="customFile"> 2.  Upload Photos </label>
-                                      </div>
-                                      <div className="custom-file">
-                                       <input type="file" className="custom-file-input" id="customFile"/>
-                                       <label className="custom-file-label" htmlFor="customFile">3. Upload Photos </label>
-                                      </div>
-                                      <div className="custom-file">
-                                       <input type="file" className="custom-file-input" id="customFile"/>
-                                       <label className="custom-file-label" htmlFor="customFile">4. Upload Photos </label>
-                                      </div>
-                                      <div className="custom-file">
-                                       <input type="file" className="custom-file-input" id="customFile"/>
-                                       <label className="custom-file-label" htmlFor="customFile">5. Upload Photos</label>
-                                      </div>
+                                    <small>Showcase your property’s best features (no pets or people, please). Requirements: JPEG, at least 1920 x 1080 pixels, less than 20MB file size, 2 photos minimum.</small>
+
+                                      {this.state.previewuploadedPhotos.length > 0 ? <div>
+                                        <h2>Preview of {this.state.previewuploadedPhotos.length} uploaded files</h2>
+                                        <div>{this.state.previewuploadedPhotos.map((selectedfile) => <img className = "mypreview" src={selectedfile.preview} alt="preview failed" />)}</div>
+                                      </div> : null}
+                                      <h2> Uploaded {this.state.uploadedPhotos.length} Files </h2>                                      
+                                      <br></br>
+                                      <ReactDropzone onDrop={this.onDrop} accept={acceptedFileTypes} multiple={true} maxSize={imageMaxSize} >
+                                          Drop your images here!!
+                                      </ReactDropzone>
+                                    <div>
                                   </div>
-                                 </div>
+                                </div>
+                              </div>
                              </div>
                            </div>
                          </div>

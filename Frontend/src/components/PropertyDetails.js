@@ -10,11 +10,10 @@ class PropertyDetails extends Component {
     constructor(props){
         super(props);
         console.log("Parameters are: ");
-        console.log(this.props.match.params.propertyID);
+        console.log(this.props.match.params);
         this.state = {
             email: "",
-            isTravelerLoggedIn: false,
-        };
+           };
         this.searchPlace = this.searchPlace.bind(this);
         this.logout = this.logout.bind(this);
     }

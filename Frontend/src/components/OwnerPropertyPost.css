@@ -26,6 +26,9 @@
     width: 190px;
   }
 
+  img.mypreview{
+    width: 20%;
+  }
   .card-header{
     color: rgb(158, 117, 12);
     background: rgb(228, 203, 41);

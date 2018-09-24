@@ -186,7 +186,7 @@ class Profile extends Component{
                             <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                             <div className="dropdown-menu">
                                 <a className="dropdown-item" href="/owner/propertypost">Post Property</a>
-                                <a className="dropdown-item" href="/MyListing">My Listings</a>
+                                <a className="dropdown-item" href="/owner/mylistings">My Listings</a>
                                 <a className="dropdown-item" onClick = {this.logout}>Logout</a>
                             </div>
                         </div>

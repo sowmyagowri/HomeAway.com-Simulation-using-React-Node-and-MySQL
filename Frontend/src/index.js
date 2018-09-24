@@ -9,6 +9,7 @@ import PropertyDetails from './components/PropertyDetails';
 import TravellerLogin from './components/TravellerLogin';
 import OwnerLogin from './components/OwnerLogin';
 import OwnerPropertyPost from './components/OwnerPropertyPost';
+import OwnerPropertyListings from './components/OwnerPropertyListings';
 import Signup1 from './components/Signup1';
 import Signup2 from './components/Signup2';
 import OwnerSignup1 from './components/OwnerSignup1';
@@ -27,7 +28,7 @@ ReactDOM.render(
         <Route path='/property/searchresult' render={(props)=> (
           <PropertySearchResults {...props} propDummy={50} />
         )} />
-        <Route path='/property/:propertyID' component={PropertyDetails} />
+        <Route path='/property/:id/:location/:fromdate/:todate/:noOfGuests' component={PropertyDetails} />
         <Route path='/traveller/login' component={TravellerLogin} />
         <Route path='/traveller/signup1' component={Signup1} />
         <Route path='/traveller/signup2' component={Signup2} />
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route path='/owner/signup1' component={OwnerSignup1} />
         <Route path='/owner/signup2' component={OwnerSignup2} />
         <Route path='/owner/propertypost' component={OwnerPropertyPost} />
+        <Route path='/owner/mylistings' component={OwnerPropertyListings} />
       </div>
       </Router>
     </div>
