@@ -8,6 +8,9 @@
     width : 1600px;
 }
 
+.form-row{
+    margin-left: 200px;
+}
 .navbar.navbar-default >.container{
    max-width: 1800px;
 }
@@ -84,6 +87,13 @@
 	opacity: 0;
 }
 
+.border1{
+    border: 4px solid transparent;
+    border-radius: 4px;
+    box-shadow: 4px 4px 4px 4px rgba(0,0,0,0.05);
+    width:1000px;
+}
+
 #heading{
     box-shadow: inset 0px 0px 0px 0px;
     border: none;
@@ -93,6 +103,18 @@
     background-color: white;
     color :black;
     font-size: 20px;
+    font-weight: 450;
+}
+
+#description{
+    box-shadow: inset 0px 0px 0px 0px;
+    border: none;
+    padding:0px;
+    width : 780px;
+    height : 50px;
+    background-color: white;
+    color :black;
+    font-size: 15px;
     font-weight: 450;
 }
 
@@ -168,6 +190,16 @@
 }
 
 #state{
+    box-shadow: inset 0px 0px 0px 0px;
+    border: none;
+    padding:0px;
+    width : 150px;
+    background-color: white;
+    font-size: 15px;
+    color :black;
+}
+
+#country{
     box-shadow: inset 0px 0px 0px 0px;
     border: none;
     padding:0px;

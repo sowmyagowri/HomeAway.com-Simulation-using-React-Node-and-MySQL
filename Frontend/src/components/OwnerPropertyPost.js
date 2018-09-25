@@ -15,9 +15,7 @@ class OwnerPropertyPost extends Component{
   //call the constructor method
   constructor(props){
     super(props);
-    this.fileInputRef = React.createRef();
       this.state =  {
-      isOwnerLoggedIn: false,
       name: cookie.load('cookie3'),
       startDate: new Date(),
       endDate: new Date(),
@@ -124,7 +122,8 @@ addProperty = (e) => {
     baseRate: this.state.baseRate,
     currency: this.state.currency,
     minStay: this.state.minStay,
-    amenities: this.state.amenities
+    amenities: this.state.amenities,
+    inputPhotos: this.state.uploadedPhotos,
   }
 
   axios.post('http://localhost:3001/homeaway/owner/listproperty', data)
@@ -174,13 +173,15 @@ onDrop = (selectedFiles, rejectedFiles) => {
           this.setState(({ previewuploadedPhotos }) => ({
             previewuploadedPhotos: previewuploadedPhotos.concat(selectedfile)
           }))
-          const reader = new FileReader();
-          reader.readAsDataURL(selectedfile);
-          reader.onload = (event) => {
-            this.setState({
-              uploadedPhotos: this.state.uploadedPhotos.concat([{ base64: event.target.result }])
-            });
-          };
+
+          console.log(this.state.selectedfile);
+
+          this.setState(({ uploadedPhotos }) => ({
+            uploadedPhotos: uploadedPhotos.concat(selectedfile)
+          }))
+
+          console.log(this.state.uploadedPhotos);
+
         } else {
           console.log(this.state.previewuploadedPhotos.length);
           alert ("You can upload a maximum of 5 images only!")
@@ -196,9 +197,7 @@ render(){
       if(!cookie.load('cookie1')){
           redirectVar = <Redirect to = "/"/>
       }
-      else{
-        this.state.isOwnerLoggedIn = true
-      }
+
   return(
     <div>
       {redirectVar}
@@ -213,7 +212,7 @@ render(){
              <button className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {this.state.name}</button>
              <div className="dropdown-menu">
                 <a className="dropdown-item" href="/Profile">Profile</a>
-                <a className="dropdown-item" href="/MyListing">My Listings</a>
+                <a className="dropdown-item" href="/owner/mylistings">My Listings</a>
                 <a className="dropdown-item" onClick = {this.logout}>Logout</a>
              </div>
            </div>
@@ -437,7 +436,7 @@ render(){
                                       </div> : null}
                                       <h2> Uploaded {this.state.uploadedPhotos.length} Files </h2>                                      
                                       <br></br>
-                                      <ReactDropzone onDrop={this.onDrop} accept={acceptedFileTypes} multiple={true} maxSize={imageMaxSize} >
+                                      <ReactDropzone name="uploadedPhoto" onDrop={this.onDrop} accept={acceptedFileTypes} multiple={true} maxSize={imageMaxSize} >
                                           Drop your images here!!
                                       </ReactDropzone>
                                     <div>

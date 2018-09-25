@@ -8,6 +8,8 @@ import Helmet from 'react-helmet';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+var longitude, lattitude, locationTitle;
+
 class PropertySearchResults extends Component {
     
     constructor(props){
@@ -227,7 +229,31 @@ class PropertySearchResults extends Component {
     }
 
     render(){
-        
+        if(this.state.place === "San Diego"){
+            lattitude = 32.736349,
+            longitude = -117.177871,
+            locationTitle = this.state.place
+       }
+       if(this.state.place === "sunnyvale"){
+        lattitude = 37.3688,
+        longitude = -122.0363,
+        locationTitle = this.state.place
+   }
+       if(this.state.place === "Los Angeles") {
+           lattitude = 34.024212,
+           longitude = -118.496475,
+           locationTitle = this.state.place
+       }
+       if(this.state.place === "New York") {
+           lattitude = 40.730610,
+           longitude = -73.935242,
+           locationTitle = this.state.place
+       }
+       if(this.state.place === "San Franscisco") {
+           lattitude = 37.773972,
+           longitude = -122.431297,
+           locationTitle = this.state.place
+       }
         if(cookie.load('cookie1')){
             this.state.isTravelerLoggedIn = true
         }
@@ -239,6 +265,9 @@ class PropertySearchResults extends Component {
             this.state.detailsFetched = true 
         }
 
+        console.log(lattitude, longitude)
+
+    
         return(
           <div>
             <Helmet>
@@ -318,16 +347,31 @@ class PropertySearchResults extends Component {
                     <div className="container-pad">
                         <div className="form-row ">
                             <div className="form-group col-sm-9" id = "property-listings" style ={{maxWidth : "900px"}}>
-                                { this.generateContents() }
+                                <div className ="Content">
+                                    { this.generateContents() }
+                                </div>
                             </div>
-                            <div className = "form-group col-sm-5" style = {{width : "800px"}}>
+                            <div className = "form-group col-sm-5" style = {{marginLeft: "20px", width : "800px"}}>
                                 <div className = "card-body border">
-                                    <h2>ASDZAF</h2>
+                                    <Map
+                                        id="myMap"
+                                        options={{
+                                        center: { lat: 32.736349, lng: -117.177871},
+                                        zoom: 8
+                                        }}
+                                        onMapLoad={map => {
+                                        var marker = new window.google.maps.Marker({
+                                            position: { lat: 32.736349, lng:  -117.177871},
+                                            map: map,
+                                            title: locationTitle
+                                        });
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
               )
               :
               (
@@ -342,4 +386,42 @@ class PropertySearchResults extends Component {
         )
     }
 }
+
+class Map extends Component {
+    constructor(props) {
+      super(props);
+      this.onScriptLoad = this.onScriptLoad.bind(this)
+    }
+  
+    onScriptLoad() {
+      const map = new window.google.maps.Map(
+        document.getElementById(this.props.id),
+        this.props.options);
+      this.props.onMapLoad(map)
+    }
+  
+    componentDidMount() {
+      if (!window.google) {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = `https://maps.google.com/maps/api/js?key=AIzaSyCpk67Ig02fwUNe7in4kt0H23kahGTbLm8`;
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+        // Below is important. 
+        //We cannot access google.maps until it's finished loading
+        s.addEventListener('load', e => {
+          this.onScriptLoad()
+        })
+      } else {
+        this.onScriptLoad()
+      }
+    }
+  
+    render() {
+      return (
+        <div style = {{width : "600px", height :"700px"}} id={this.props.id} />
+      );
+    }
+  }
+
 export default PropertySearchResults;
