@@ -1,30 +1,25 @@
 var express = require('express');
-var router = express.Router();
+// App Instance
+var app = express();
 var pool = require('../models/UserDB.js');
+var router = express.Router();
+
 
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, '../uploads');
+    callback(null, './uploads');
   },
   filename: (req, file, callback) => {
 
     callback(null, file.originalname + '-' + Date.now());
   },
 });
-var upload = multer({ storage : storage }).array('uploadedPhoto',5);
+var upload = multer({ storage : storage })
 
 
 // Add Property
-router.route('/owner/listproperty').post(function (req, res) {
-  
-    upload(req,res,function(err) {
-
-    if(err) {
-        return res.end("Error uploading file.");
-    }
-    console.log("File is uploaded");
-  });
+router.route('/owner/listproperty').post(upload.array('uploadedPhoto',5), function (req, res) {
 
   console.log("req.files");
   console.log(req.files);

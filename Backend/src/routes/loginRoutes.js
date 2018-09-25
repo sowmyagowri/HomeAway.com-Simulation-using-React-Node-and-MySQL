@@ -1,6 +1,10 @@
+//Libraries
 var express = require('express');
-var router = express.Router();
+// App Instance
+var app = express();
 var pool = require('../models/UserDB.js');
+var router = express.Router();
+
 var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'd6F3Efeq';

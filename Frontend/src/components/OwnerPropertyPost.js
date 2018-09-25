@@ -37,6 +37,7 @@ class OwnerPropertyPost extends Component{
       uploadedPhotos: [],
       uploadedPhotoLimit: 5,
       previewuploadedPhotos: [],
+      inputPhotos:[],
       };
       this.logout = this.logout.bind(this);
       this.streetAddressChangeHandler = this.streetAddressChangeHandler.bind(this);
@@ -123,10 +124,33 @@ addProperty = (e) => {
     currency: this.state.currency,
     minStay: this.state.minStay,
     amenities: this.state.amenities,
-    inputPhotos: this.state.uploadedPhotos,
+    //inputPhotos: this.state.uploadedPhotos,
   }
 
-  axios.post('http://localhost:3001/homeaway/owner/listproperty', data)
+  var formdata= new FormData();
+
+  for (var i=0; i< this.state.uploadedPhotos.length; i++){
+    formdata.append('uploadedPhoto', this.state.uploadedPhotos[i]);
+    console.log(this.state.uploadedPhotos[i]);
+  }
+
+  // Display the key/value pairs
+  for (var pair of formdata.entries()) {
+  console.log(pair[0]+ ', ' + pair[1]); 
+  }
+
+  Object.keys(data).forEach(function(key){
+    formdata.append(key, data[key]);
+
+  });
+
+  // Display the key/value pairs
+  for (var pair of formdata.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+  }
+
+  axios.defaults.withCredentials = true;
+  axios.post('http://localhost:3001/homeaway/owner/listproperty', formdata)
     .then(response => {
       if(response.data) {
         console.log("Successful post property")
@@ -176,9 +200,9 @@ onDrop = (selectedFiles, rejectedFiles) => {
 
           console.log(this.state.selectedfile);
 
-          this.setState(({ uploadedPhotos }) => ({
-            uploadedPhotos: uploadedPhotos.concat(selectedfile)
-          }))
+          this.setState({
+           uploadedPhotos: this.state.uploadedPhotos.concat(selectedfile)
+          })
 
           console.log(this.state.uploadedPhotos);
 
@@ -194,13 +218,13 @@ onDrop = (selectedFiles, rejectedFiles) => {
 render(){
   let redirectVar = null;
   console.log(cookie.load('cookie1'))
-      if(!cookie.load('cookie1')){
-          redirectVar = <Redirect to = "/"/>
-      }
+  if(!cookie.load('cookie1')){
+    redirectVar = <Redirect to = "/"/>
+  }
 
   return(
     <div>
-      {redirectVar}
+      
       <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
