@@ -229,31 +229,33 @@ class PropertySearchResults extends Component {
     }
 
     render(){
-        if(this.state.place === "San Diego"){
+        if(this.state.location === "San Diego"){
             lattitude = 32.736349,
             longitude = -117.177871,
-            locationTitle = this.state.place
-       }
-       if(this.state.place === "sunnyvale"){
-        lattitude = 37.3688,
-        longitude = -122.0363,
-        locationTitle = this.state.place
-   }
-       if(this.state.place === "Los Angeles") {
-           lattitude = 34.024212,
-           longitude = -118.496475,
-           locationTitle = this.state.place
-       }
-       if(this.state.place === "New York") {
-           lattitude = 40.730610,
-           longitude = -73.935242,
-           locationTitle = this.state.place
-       }
-       if(this.state.place === "San Franscisco") {
-           lattitude = 37.773972,
-           longitude = -122.431297,
-           locationTitle = this.state.place
-       }
+            locationTitle = this.state.location
+        }
+        if(this.state.location.toLowerCase() === "sunnyvale"){
+            console.log("I am in location");
+            lattitude = 37.3688,
+            longitude = -122.0363,
+            locationTitle = this.state.location
+            }
+        if(this.state.location === "Los Angeles") {
+            lattitude = 34.024212,
+            longitude = -118.496475,
+            locationTitle = this.state.location
+        }
+        if(this.state.location === "New York") {
+            lattitude = 40.730610,
+            longitude = -73.935242,
+            locationTitle = this.state.location
+        }
+        if(this.state.location === "San Franscisco") {
+            lattitude = 37.773972,
+            longitude = -122.431297,
+            locationTitle = this.state.location
+        }
+
         if(cookie.load('cookie1')){
             this.state.isTravelerLoggedIn = true
         }
@@ -312,31 +314,35 @@ class PropertySearchResults extends Component {
                 </div>
             <div className="container" style = {{marginTop :"1%"}}>
               <div className="row">
-                  <div className="col-md-4 col-md-offset-3">
-                      <div className="form-group">
-                      <input defaultValue = {this.state.location} type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" name="location" id="location" placeholder="Where do you want to go?" onChange = {this.locationChangeHandler}/>
+                <div className="col-md-4 col-md-offset-3">
+                    <div className="form-group">
+                      <input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control"  defaultValue = {this.state.location} name="location" id="location" placeholder="Where do you want to go?" onChange = {this.locationChangeHandler}/>
                         <span className="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                </div>
+                <div className="col-md-offset-3">
+                    <div className="form-group card" style = {{ height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}}>
+                      <input defaultValue = {this.state.fromdate} onChange = {this.fromDateChangeHandler} type = "date" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" value={this.state.fromdate}/>
+                    </div>
+                </div>
+                <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
+                    <div className="form-group card" style = {{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}}> 
+                    <input defaultValue = {this.state.todate} onChange = {this.toDateChangeHandler} type = "date" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" value={this.state.todate}/>
                       </div>
-                  </div>
-                  <div className="col-md-offset-3">
-                    <input defaultValue = {this.state.fromdate} onChange = {this.fromDateChangeHandler} type="date" name="fromdate"/>  
-                  </div>
-                  <div className="col-md-offset-3">
-                    <input defaultValue = {this.state.todate} onChange = {this.toDateChangeHandler} type="date" name="todate"/>  
-                  </div>
-                  <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
+                </div>
+                <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                       <div className="form-group">
-                      <input name="noOfGuests" defaultValue = {this.state.noOfGuests} type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" placeholder="No of guests?" onChange = {this.noOfGuestsChangeHandler}/>
+                      <input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" value= {this.state.noOfGuests}/>
                         <span className="glyphicon glyphicon-search form-control-feedback"></span>
-                      </div>
-                  </div>
-                  <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
+                      </div> 
+                </div>
+                <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                   <div className="form-group">
-                  <button className="btn btn-primary" onClick = {this.searchPlace} style = {{ height: "60px", borderColor: "#ffffff", backgroundColor:"#0067db", width: "120px", borderRadius: 25}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
-                  Search
-                  </button>
+                    <button className="btn btn-primary" onClick = {this.searchPlace} style = {{ height: "60px", borderColor: "#ffffff", backgroundColor:"#0067db", width: "120px", borderRadius: 25}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
+                    Search
+                    </button>
                   </div>
-                  </div>
+                </div>
                </div>
             </div>
             </Navbar>
@@ -346,7 +352,7 @@ class PropertySearchResults extends Component {
                 <div className = "container-full">
                     <div className="container-pad">
                         <div className="form-row ">
-                            <div className="form-group col-sm-9" id = "property-listings" style ={{maxWidth : "900px"}}>
+                            <div className="form-group col-sm-8" id = "property-listings" style ={{maxWidth : "800px"}}>
                                 <div className ="Content">
                                     { this.generateContents() }
                                 </div>
@@ -356,12 +362,12 @@ class PropertySearchResults extends Component {
                                     <Map
                                         id="myMap"
                                         options={{
-                                        center: { lat: 32.736349, lng: -117.177871},
+                                        center: { lat: lattitude, lng:  longitude },
                                         zoom: 8
                                         }}
                                         onMapLoad={map => {
                                         var marker = new window.google.maps.Marker({
-                                            position: { lat: 32.736349, lng:  -117.177871},
+                                            position: { lat: lattitude, lng:  longitude},
                                             map: map,
                                             title: locationTitle
                                         });

@@ -197,10 +197,10 @@ class Home extends Component {
                       </div>
                     </div>
                   <div className="col-md-offset-3">
-                    <input onChange = {this.fromDateChangeHandler} type="date" name="fromdate"/>  
+                    <input style ={{width: "130px"}} onChange = {this.fromDateChangeHandler} type="date" name="fromdate"/>  
                   </div>
                   <div className="col-md-offset-3">
-                    <input onChange = {this.toDateChangeHandler} type="date" name="todate"/>  
+                    <input style ={{width: "130px"}} onChange = {this.toDateChangeHandler} type="date" name="todate"/>  
                   </div>
                   <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                     <div className="form-group">

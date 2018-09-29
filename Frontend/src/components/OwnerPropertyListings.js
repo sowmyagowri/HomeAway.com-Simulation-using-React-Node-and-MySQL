@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import 'typeface-roboto'
-import './PropertySearchResults.css';
+import './OwnerPropertyListings.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
@@ -55,35 +55,35 @@ class OwnerPropertyListings extends Component {
         const {isLoading} = this.state;
         if(!isLoading){
             return Object.keys(allListings).map((i) => {
-                    return <div className="brdr bgc-fff pad-10 box-shad btm-mrg-20 border1 property-listing" key={allListings[i].ID}>
+                    return <div className="brdr bgc-fff pad-10 box-shad btm-mrg-20 myborder1 property-listing" key={allListings[i].ID}>
                     <div className="media">
                         <a className="pull-left" href="#" target="_parent">
                         <img alt="image" className="img-responsive" src="http://images.prd.mris.com/image/V2/1/Yu59d899Ocpyr_RnF0-8qNJX1oYibjwp9TiLy-bZvU9vRJ2iC1zSQgFwW-fTCs6tVkKrj99s7FFm5Ygwl88xIA.jpg"/></a>
-                        <div className="clearfix visible-sm border1"> </div>
+                        <div className="clearfix visible-sm myborder1"> </div>
                         <div className="media-body fnt-smaller">
-                                <input id = "heading" value = {allListings[i].headline} type="text" readonly="readonly" />
+                                <input id = "myheading" value = {allListings[i].headline} type="text" readonly="readonly" />
                                 <br></br><br></br>
-                                <input id = "description" value = {allListings[i].description} type="text" readonly="readonly" />
+                                <input id = "mydescription" value = {allListings[i].description} type="text" readonly="readonly" />
                                 <br></br><br></br>
-                                <input id = "address" value = {allListings[i].streetAddress} type="text" readonly="readonly" />
+                                <input id = "myaddress" value = {allListings[i].streetAddress} type="text" readonly="readonly" />
                                 <br></br>
-                                <input id = "city" value = {allListings[i].city} type="text" readonly="readonly" />
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = " " />
-                                <input id = "state" value = {allListings[i].state} type="text" readonly="readonly" />
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = " " />
-                                <input id = "country" value = {allListings[i].country} type="text" readonly="readonly" />
+                                <input id = "mycity" value = {allListings[i].city} type="text" readonly="readonly" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = " " />
+                                <input id = "mystate" value = {allListings[i].state} type="text" readonly="readonly" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = " " />
+                                <input id = "mycountry" value = {allListings[i].country} type="text" readonly="readonly" />
                                 <br></br><br></br>
                                 <input id = "type" value = {allListings[i].propertyType} type="text" readonly="readonly" />
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
                                 <input id = "bedroom" value = {allListings[i].bedrooms} type="text" readonly="readonly" />
                                 <input id = "bedroom" type="text" readonly="readonly" placeholder = "BR"/>
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
                                 <input id = "bathroom" value = {allListings[i].bathrooms} type="text" readonly="readonly" />
                                 <input id = "bathroom" type="text" readonly="readonly" placeholder = "BA"/>
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
                                 <input id = "sleep" type="text" readonly="readonly" placeholder = "Sleeps"/>
                                 <input id = "sleep" value = {allListings[i].sleeps} type="text" readonly="readonly" />
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
+                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
                                 <input id = "sleep" type="text" readonly="readonly" placeholder = "MinStay"/>
                                 <input id = "sleep" value = {allListings[i].minStay} type="text" readonly="readonly" />
                                 <br></br><br></br>

@@ -124,7 +124,6 @@ addProperty = (e) => {
     currency: this.state.currency,
     minStay: this.state.minStay,
     amenities: this.state.amenities,
-    //inputPhotos: this.state.uploadedPhotos,
   }
 
   var formdata= new FormData();
@@ -154,7 +153,6 @@ addProperty = (e) => {
     .then(response => {
       if(response.data) {
         console.log("Successful post property")
-        //window.streetAddress = '/ownerdashboard'
       } else {
         console.log("Post Property Error")
       }
@@ -518,8 +516,8 @@ render(){
                                      </div>
                                      <div className="form-row">
                                      <label className="form-check-label" htmlFor="departdate" style = {{marginTop : "20px"}}>Property Available Date between</label>
-                                      <input onChange = {this.startDateChangeHandler} type="date" name="fromdate"/>  
-                                      <input onChange = {this.endDateChangeHandler} type="date" name="todate"/> 
+                                      <input style ={{width: "130px"}} onChange = {this.startDateChangeHandler} type="date" name="fromdate"/>  
+                                      <input style ={{width: "130px"}} onChange = {this.endDateChangeHandler} type="date" name="todate"/> 
                                      </div>
                                      <div className="form-row">
                                              <div className="form-group">
