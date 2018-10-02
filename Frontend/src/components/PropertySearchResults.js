@@ -29,8 +29,7 @@ class PropertySearchResults extends Component {
         this.noOfGuestsChangeHandler = this.noOfGuestsChangeHandler.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
         this.searchPlace = this.searchPlace.bind(this);
-        this.generateContents = this.generateContents.bind(this);
-        this.calculateRate = this.calculateRate.bind(this);
+        this.renderSearchResult = this.renderSearchResult.bind(this);
         this.logout = this.logout.bind(this);
     }
 
@@ -71,42 +70,32 @@ class PropertySearchResults extends Component {
         })
     }
 
-    calculateRate = (rate) => {
-        var start = moment(this.state.fromdate, "YYYY-MM-DD");
-        var end = moment(this.state.todate, "YYYY-MM-DD");
-
-        //Difference in number of days
-        var difference = (moment.duration(end.diff(start)).asDays());
-        return (difference * rate);
-    }
-
-    generateContents () {
+    renderSearchResult () {
         const {searchData} = this.state;
         const {isLoading} = this.state;
         if(!isLoading){
             return Object.keys(searchData).map((i) => {
-                    return <div className="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing" key={searchData[i].ID}>
+                    return <div className="brdr bgc-white pad-10 box-shad btm-mrg-20 property-listing" key={searchData[i].ID}>
                     <div className="media">
                         <a className="pull-left" href="#" target="_parent">
-                        <img alt="image" className="img-responsive" src="http://images.prd.mris.com/image/V2/1/Yu59d899Ocpyr_RnF0-8qNJX1oYibjwp9TiLy-bZvU9vRJ2iC1zSQgFwW-fTCs6tVkKrj99s7FFm5Ygwl88xIA.jpg"/></a>
+                        <img alt="Thumbnail View of Property" className="img-responsive" src={`http://localhost:3001/uploads/${searchData[i].image1}`} /></a>
                         <div className="clearfix visible-sm"> </div>
                         <div className="media-body fnt-smaller">
-                                <input id = "heading" value = {searchData[i].headline} type="text" readonly="readonly" />
+                                <input id = "heading" value = {searchData[i].headline} type="text" readOnly="readOnly" />
                                 <br></br><br></br>
-                                <input id = "type" value = {searchData[i].propertyType} type="text" readonly="readonly" />
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "bedroom" value = {searchData[i].bedrooms} type="text" readonly="readonly" />
-                                <input id = "bedroom" type="text" readonly="readonly" placeholder = "BR"/>
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "bathroom" value = {searchData[i].bathrooms} type="text" readonly="readonly" />
-                                <input id = "bathroom" type="text" readonly="readonly" placeholder = "BA"/>
-                                <input id = "symbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "sleep" type="text" readonly="readonly" placeholder = "Sleeps"/>
-                                <input id = "sleep" value = {searchData[i].sleeps} type="text" readonly="readonly" />
+                                <ul className="list-inline">
+                                    <li className = "list-inline-item">{searchData[i].propertyType}</li>
+                                    <li className = "list-inline-item dot"></li>
+                                    <li className = "list-inline-item"> {searchData[i].bedrooms} BR</li>
+                                    <li className = "list-inline-item dot"></li>
+                                    <li className = "list-inline-item"> {searchData[i].bathrooms} BA</li>
+                                    <li className = "list-inline-item dot"></li>
+                                    <li className = "list-inline-item"> Sleeps  {searchData[i].sleeps}</li>
+                                </ul>
                                 <br></br><br></br>
-                                <input id = "heading" value = {searchData[i].currency + ' ' + this.calculateRate(searchData[i].baseRate)} type="text" readonly="readonly" />
+                                <input id = "heading" value = {searchData[i].currency + ' ' + searchData[i].baseRate} type="text" readOnly="readOnly" />
 
-                                <Link class="view" to={`/property/${searchData[i].uid}/${this.state.location}/${this.state.fromdate}/${this.state.todate}/${this.state.noOfGuests}`} target="_blank">Dummy Link</Link>
+                                <Link className="view" to={`/property/${searchData[i].uid}/${this.state.location}/${this.state.fromdate}/${this.state.todate}/${this.state.noOfGuests}`} target="_blank">Dummy Link</Link>
                         </div>
                     </div>
         
@@ -229,7 +218,7 @@ class PropertySearchResults extends Component {
     }
 
     render(){
-        if(this.state.location === "San Diego"){
+        if(this.state.location.toLowerCase() === "san diego"){
             lattitude = 32.736349,
             longitude = -117.177871,
             locationTitle = this.state.location
@@ -240,23 +229,23 @@ class PropertySearchResults extends Component {
             longitude = -122.0363,
             locationTitle = this.state.location
             }
-        if(this.state.location === "Los Angeles") {
+        if(this.state.location.toLowerCase() === "los angeles") {
             lattitude = 34.024212,
             longitude = -118.496475,
             locationTitle = this.state.location
         }
-        if(this.state.location === "New York") {
+        if(this.state.location.toLowerCase() === "new york") {
             lattitude = 40.730610,
             longitude = -73.935242,
             locationTitle = this.state.location
         }
-        if(this.state.location === "San Franscisco") {
+        if(this.state.location.toLowerCase() === "san franscisco") {
             lattitude = 37.773972,
             longitude = -122.431297,
             locationTitle = this.state.location
         }
-
-        if(cookie.load('cookie1')){
+        console.log('cookie1');
+        if(cookie.load('cookie1') === 'travellercookie'){
             this.state.isTravelerLoggedIn = true
         }
 
@@ -266,10 +255,7 @@ class PropertySearchResults extends Component {
         else {
             this.state.detailsFetched = true 
         }
-
         console.log(lattitude, longitude)
-
-    
         return(
           <div>
             <Helmet>
@@ -282,7 +268,7 @@ class PropertySearchResults extends Component {
                     </Navbar.Brand>
                 </Navbar.Header>
                 <div>
-                    <img src={require('./us_flag.png')}/>
+                    <img alt="US Flag" src={require('./us_flag.png')}/>
                     <button id="blue" className="btn" style = {{fontColor : "black", backgroundColor:"white", background:"white", borderColor:"white"}} type="button"><a href="#">Trip Boards</a></button>
                     {!this.state.isTravelerLoggedIn 
                     ?
@@ -301,7 +287,7 @@ class PropertySearchResults extends Component {
                         <button id="blue" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                         <div className="dropdown-menu">
                             <a className="dropdown-item" href="/Profile">Profile</a>
-                            <a className="dropdown-item" href="/MyTrips">My Trips</a>
+                            <a className="dropdown-item" href="/traveller/mytrips">My Trips</a>
                             <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
                         </div>
                         </div>
@@ -332,7 +318,7 @@ class PropertySearchResults extends Component {
                 </div>
                 <div className="col-md-offset-3" style = {{marginLeft: "13px"}}>
                       <div className="form-group">
-                      <input type="text" style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" value= {this.state.noOfGuests}/>
+                      <input type="text" onChange = {this.noOfGuestsChangeHandler} style ={{height: "60px", fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}} className="form-control" value= {this.state.noOfGuests}/>
                         <span className="glyphicon glyphicon-search form-control-feedback"></span>
                       </div> 
                 </div>
@@ -351,10 +337,10 @@ class PropertySearchResults extends Component {
               (
                 <div className = "container-full">
                     <div className="container-pad">
-                        <div className="form-row ">
+                        <div className="form-row">
                             <div className="form-group col-sm-8" id = "property-listings" style ={{maxWidth : "800px"}}>
                                 <div className ="Content">
-                                    { this.generateContents() }
+                                    { this.renderSearchResult() }
                                 </div>
                             </div>
                             <div className = "form-group col-sm-5" style = {{marginLeft: "20px", width : "800px"}}>

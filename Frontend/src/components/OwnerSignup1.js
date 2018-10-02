@@ -6,16 +6,11 @@ import {Navbar} from "react-bootstrap";
 
 //Define a Owner Signup1 Component
 class OwnerSignup1 extends Component{
-    //call the constructor method
-    constructor(props){
-        //Call the constrictor of Super class i.e The Component
-        super(props);
-    }
     
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(cookie.load('cookie1')){
+        if(cookie.load('cookie1') === 'ownercookie'){
             redirectVar = <Redirect to= "/"/>
         }
         return(
@@ -63,9 +58,13 @@ class OwnerSignup1 extends Component{
                                 <span class="myspan">or</span>
                             </div>
                             <br></br>
+                            <div>
                             <button class="mybtn facebook_button">Log in with Facebook</button>
+                            </div>
                             <br></br>
-                            <button className="mybtn google_button" style = {{marginTop : "20px", marginBottom : "20px", color: "#787878", background: "#f3f3f3 url(google_logo.png) left no-repeat"}}>Log in with Google</button>
+                            <div>
+                            <button className="mybtn google_button" >Log in with Google</button>
+                            </div>
                             <br></br>
                             <div class="center" id= "yourdiv">
                             <font size="1">We don't post anything without your permission.

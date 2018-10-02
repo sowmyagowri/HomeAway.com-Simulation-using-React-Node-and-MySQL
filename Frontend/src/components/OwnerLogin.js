@@ -97,7 +97,7 @@ class OwnerLogin extends Component{
         //redirect based on successful login
         let redirectVar = null;
         console.log(cookie.load('cookie1'));
-        if(cookie.load('cookie1')){
+        if(cookie.load('cookie1') === 'ownercookie'){
             redirectVar = <Redirect to= "/owner/propertypost"/>
         }
         return(
@@ -138,7 +138,7 @@ class OwnerLogin extends Component{
                 <div class="container">
                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
                 <div class="login-form">
-                    <h2>Account Login</h2>  
+                    <h2>Owner Account Login</h2>  
                     <hr width="98%"></hr>         
                     <br></br>
                             <div class="form-group">
@@ -158,9 +158,13 @@ class OwnerLogin extends Component{
                                 <span class="myspan">or</span>
                             </div>
                             <br></br>
-                            <button class="mybtn facebook_button">Log in with Facebook</button>
+                            <div>
+                                <button class="mybtn facebook_button">Log in with Facebook</button>
+                            </div>
                             <br></br>
-                            <button className="mybtn google_button" style = {{marginTop : "20px", marginBottom : "20px", color: "#787878", background: "#f3f3f3 url(google_logo.png) left no-repeat"}}>Log in with Google</button>
+                            <div>
+                                <button className="mybtn google_button" >Log in with Google</button>
+                            </div>
                             <br></br>
                             <font size="2">We don't post anything without your permission.</font>
                             <br></br>

@@ -88,6 +88,23 @@ body{
     line-height: 22px;
     cursor: pointer;
   }
-  
+
+  .google_button{
+    display: inline-block;
+    border-top: 1px solid #787878;
+    border-right: 1px solid #787878;
+    border-bottom: 1px solid #787878;
+    border-left: 1px solid #787878;;
+    height: 30px;
+    padding-right: 7px;
+    padding-left: 29px;
+    font-weight: lighter;
+    font-size: 17px;
+    color: #787878;
+    text-decoration: none;
+    background: #f3f3f3 url(google_logo.png) left no-repeat;
+    line-height: 22px;
+    cursor: pointer;
+}
   button#opener_guid {border:0;background:none; color: rgb(34, 45, 199); cursor:pointer;}
   

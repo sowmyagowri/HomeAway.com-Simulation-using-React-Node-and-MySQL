@@ -7,6 +7,7 @@ import Home from './components/Home';
 import PropertySearchResults from './components/PropertySearchResults';
 import PropertyDetails from './components/PropertyDetails';
 import TravellerLogin from './components/TravellerLogin';
+import TravellerTripListings from './components/TravellerTripListings';
 import OwnerLogin from './components/OwnerLogin';
 import OwnerPropertyPost from './components/OwnerPropertyPost';
 import OwnerPropertyListings from './components/OwnerPropertyListings';
@@ -32,6 +33,7 @@ ReactDOM.render(
         <Route path='/traveller/login' component={TravellerLogin} />
         <Route path='/traveller/signup1' component={Signup1} />
         <Route path='/traveller/signup2' component={Signup2} />
+        <Route path='/traveller/mytrips' component={TravellerTripListings} />
         <Route path='/Profile' component={Profile} />
         <Route path='/owner/login' component={OwnerLogin} />
         <Route path='/owner/signup1' component={OwnerSignup1} />

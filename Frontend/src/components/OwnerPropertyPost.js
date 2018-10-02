@@ -5,6 +5,7 @@ import {Redirect} from 'react-router';
 import './OwnerPropertyPost.css';
 import {Navbar} from "react-bootstrap";
 import ReactDropzone from "react-dropzone";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
 const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
@@ -38,6 +39,8 @@ class OwnerPropertyPost extends Component{
       uploadedPhotoLimit: 5,
       previewuploadedPhotos: [],
       inputPhotos:[],
+      alert: null,
+      posted: false,
       };
       this.logout = this.logout.bind(this);
       this.streetAddressChangeHandler = this.streetAddressChangeHandler.bind(this);
@@ -59,6 +62,8 @@ class OwnerPropertyPost extends Component{
       this.headlineChangeHandler = this.headlineChangeHandler.bind(this);
       this.onDrop = this.onDrop.bind(this);
       this.addProperty = this.addProperty.bind(this);
+      this.handleValidation = this.handleValidation.bind(this);
+      this.submitListing = this.submitListing.bind(this);
 }
 streetAddressChangeHandler =  (e) =>{this.setState ({streetAddress : e.target.value})}
 
@@ -102,6 +107,74 @@ logout = () => {
   window.location = "/"
 }
 
+handleValidation(){
+  let formIsValid = true;
+
+  //From Date
+  if(!this.state.startDate){
+    formIsValid = false;
+    alert("From Date is a Required field");
+    console.log("From Date cannot be empty");
+  } else {
+    var CurrentDate = new Date();
+    CurrentDate.setHours(0,0,0,0);
+    var GivenstartDate = new Date(this.state.startDate.replace(/-/g, '\/'));
+    if(GivenstartDate < CurrentDate){
+      alert('From date should be greater than the current date.');
+      formIsValid = false;
+    }
+  }
+
+  //End Date
+  if(!this.state.endDate){
+      formIsValid = false;
+      alert("To Date is a Required field");
+      console.log("To Date cannot be empty");
+   } else {
+    var CurrentDate = new Date();
+    CurrentDate.setHours(0,0,0,0);
+    var GivenendDate = new Date(this.state.endDate.replace(/-/g, '\/'));
+
+    if(GivenendDate < CurrentDate){
+      alert('To date should be greater than the current date.');
+      formIsValid = false;
+    } else {
+      if (GivenendDate <= GivenstartDate){
+        alert('To date should be greater than from date.');
+        formIsValid = false;
+      }
+    }
+  }
+
+   //Numberof guests
+   if(!this.state.sleeps){
+    formIsValid = false;
+    alert("Number of Guests is a Required field");
+    console.log("Number of guests cannot be empty");
+  }
+  
+ return formIsValid;
+}
+
+submitListing = () => {
+  console.log("In submit")
+  if(this.handleValidation()){
+    console.log("in setting alert");
+      const getAlert = () => (
+          <SweetAlert 
+          success 
+          title = "Congratulations!!"
+          onConfirm={() => this.addProperty()}> 
+          You successfully listed your property!!!
+          </SweetAlert>
+      );
+
+      this.setState({
+        alert: getAlert(),
+      })
+    }
+}
+
 addProperty = (e) => {
   console.log("In Add Property");
   console.log(this.state.startDate);
@@ -133,11 +206,6 @@ addProperty = (e) => {
     console.log(this.state.uploadedPhotos[i]);
   }
 
-  // Display the key/value pairs
-  for (var pair of formdata.entries()) {
-  console.log(pair[0]+ ', ' + pair[1]); 
-  }
-
   Object.keys(data).forEach(function(key){
     formdata.append(key, data[key]);
 
@@ -152,7 +220,8 @@ addProperty = (e) => {
   axios.post('http://localhost:3001/homeaway/owner/listproperty', formdata)
     .then(response => {
       if(response.data) {
-        console.log("Successful post property")
+        console.log("Successful post property");
+        this.setState ({posted: true})
       } else {
         console.log("Post Property Error")
       }
@@ -214,19 +283,23 @@ onDrop = (selectedFiles, rejectedFiles) => {
 }
 
 render(){
+
   let redirectVar = null;
   console.log(cookie.load('cookie1'))
-  if(!cookie.load('cookie1')){
-    redirectVar = <Redirect to = "/"/>
+  if(cookie.load('cookie1') != 'ownercookie'){
+    redirectVar = <Redirect to = "/owner/login"/>
+  }
+  if(this.state.posted){
+    redirectVar = <Redirect to = "/owner/mylistings"/>
   }
 
   return(
     <div>
-      
+      {redirectVar}
       <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#" title = "HomeAway" className = "logo"><img src={require('./homeaway_logo.png')}/></a>
+              <a href="#" title = "HomeAway" className = "logo"><img alt="Homeaway Logo" src={require('./homeaway_logo.png')}/></a>
             </Navbar.Brand>
           </Navbar.Header>
         <div>
@@ -329,7 +402,7 @@ render(){
                                        <input id="zipcode" name="zipcode" onChange = {this.zipcodeChangeHandler} value = {this.state.zipcode} placeholder="Zip Code" className="form-control" required="required" type="text"/>
                                      </div>
                                      <div className="form-group col-md-3">
-                                       <input id="country" name="country" onChange = {this.countryChangeHandler} value = {this.state.country} placeholder="Country" className="form-control" required="required" type="text"/>
+                                       <input id="zipcode" name="country" onChange = {this.countryChangeHandler} value = {this.state.country} placeholder="Country" className="form-control" required="required" type="text"/>
                                      </div>
                                      </div>
                                    </div>
@@ -376,7 +449,7 @@ render(){
                                             <div className="input-group-addon">
                                               <i className="fa fa-inr"></i>
                                             </div>
-                                            <select id="type" name="propertyType"  onChange = {this.propertyTypeChangeHandler} value={this.state.propertyType} className="select form-control">
+                                            <select name="propertyType"  onChange = {this.propertyTypeChangeHandler} value={this.state.propertyType} className="select form-control">
                                               <option disabled hidden defaultValue>Property Type</option>
                                               <option value="Home">Family Home</option>
                                               <option value="Studio">Studio</option>
@@ -454,7 +527,7 @@ render(){
 
                                       {this.state.previewuploadedPhotos.length > 0 ? <div>
                                         <h2>Preview of {this.state.previewuploadedPhotos.length} uploaded files</h2>
-                                        <div>{this.state.previewuploadedPhotos.map((selectedfile) => <img className = "mypreview" src={selectedfile.preview} alt="preview failed" />)}</div>
+                                        <div>{this.state.previewuploadedPhotos.map((selectedfile) => <img className = "mypreview" src={selectedfile.preview} alt="Property Preview" />)}</div>
                                       </div> : null}
                                       <h2> Uploaded {this.state.uploadedPhotos.length} Files </h2>                                      
                                       <br></br>
@@ -531,7 +604,8 @@ render(){
                                                </div>
                                          </div>
                                          <div className="form-row">
-                                             <button type="button" onClick = {this.addProperty} className="btn btn-danger">Submit</button>
+                                             <button type="button" onClick = {this.submitListing} className="btn btn-danger">Submit</button>
+                                             {this.state.alert}
                                          </div>
                                      </form>
                                   </div>

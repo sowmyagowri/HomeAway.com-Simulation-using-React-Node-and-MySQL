@@ -1,5 +1,6 @@
 //Libraries
 var express = require('express');
+var path = require('path');
 // App Instance
 var app = express();
 var bodyParser = require('body-parser');
@@ -34,7 +35,6 @@ pool.query('select * from users',  function(err, rows){
   if(err) throw err;
   else {
     console.log("Connection to DB established");
-    console.log(rows);
   }
 });  
 
@@ -49,6 +49,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(basePath, loginRoutes);
 app.use(basePath, propertyRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '/uploads/')));
+
 
 // Execute App
 app.listen(port, () => {

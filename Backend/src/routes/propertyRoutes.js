@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var pool = require('../models/UserDB.js');
 var router = express.Router();
-
+var async = require('async');
 
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -11,8 +11,8 @@ const storage = multer.diskStorage({
     callback(null, './uploads');
   },
   filename: (req, file, callback) => {
-
-    callback(null, file.originalname + '-' + Date.now());
+    fileExtension = file.originalname.split('.')[1] // get file extension from original file
+    callback(null, file.originalname.split('.')[0] + '-' + Date.now() + '.' + fileExtension);
   },
 });
 var upload = multer({ storage : storage })
@@ -77,7 +77,7 @@ router.route('/owner/listproperty').post(upload.array('uploadedPhoto',5), functi
 router.route('/property/search').post(function (req, res) {
   console.log(req.body);
   
-  pool.query('SELECT * from `property` where (uid NOT IN (SELECT propertyID from `bookings` where ((? BETWEEN bookedFrom AND bookedTo) OR (? BETWEEN bookedFrom AND bookedTo)))) AND city = ? and startDate <= ? and endDate >= ? and sleeps >= ?', [req.body.startDate, req.body.endDate, req.body.city.toLowerCase(), req.body.startDate, req.body.endDate, req.body.noOfGuests], function (error,result) {
+  pool.query('SELECT * from `property` where (uid NOT IN (SELECT propertyID from `bookings` where ((? BETWEEN bookedFrom AND bookedTo) OR (? BETWEEN bookedFrom AND bookedTo)))) and city = ? and startDate <= ? and endDate >= ? and sleeps >= ?', [req.body.startDate, req.body.endDate, req.body.city.toLowerCase(), req.body.startDate, req.body.endDate, req.body.noOfGuests], function (error,result) {
     if (error) {
       console.log(error);
       console.log("unable to search database");
@@ -110,17 +110,52 @@ router.route('/property/:id').get(function (req, res) {
 // List Property by owner
 router.route('/owner/propertylistings').post(function (req, res) {
   console.log(req.body);
+
   pool.query('SELECT * from `property` where listedBy = ? ', [req.body.listedBy], function (error,result) {
     if (error) {
       console.log(error);
       console.log("unable to search database");
       res.status(400).send("unable to search database");
     } else {
-      console.log(JSON.stringify(result));
-      res.status(200).send(JSON.stringify(result));
-      console.log("Property Found");
+      
+      var resultCopy = result;
+      async.eachOfSeries (resultCopy, function(value, i, inner_callback) {
+        value.bookedFrom = []
+        value.bookedTo = []
+        value.bookedBy = []
+        console.log("Property ID: ", value.uid)
+        pool.query('SELECT * from `bookings` a JOIN `users` b ON a.bookedBy = b.email where propertyID = ? ', [value.uid], function (error,bookingResult) {
+          if (!error){
+            if (bookingResult.length > 0){
+              console.log("Inside query");
+              console.log("bookingResult: ", bookingResult)
+              Object.keys(bookingResult).map(function(j){
+                console.log("Value of value.uid is ", value.uid)
+                var tempbookedFrom = bookingResult[j].bookedFrom.getFullYear() + '-' + (bookingResult[j].bookedFrom.getMonth()+1) + '-' + bookingResult[j].bookedFrom.getDate()
+                value.bookedFrom.push(tempbookedFrom)
+                var tempbookedTo = bookingResult[j].bookedTo.getFullYear() + '-' + (bookingResult[j].bookedTo.getMonth()+1) + '-' + bookingResult[j].bookedTo.getDate()
+                value.bookedTo.push(tempbookedTo)
+                var tempbookedBy = bookingResult[j].firstname + ' ' + bookingResult[j].lastname
+                value.bookedBy.push(tempbookedBy)
+              })
+            }
+            inner_callback(null);
+          } else {
+            console.log("Error while performing Query");
+            inner_callback(error);
+          }
+        });
+      }, function (error) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Property Found");
+          console.log(resultCopy);
+          res.status(200).send(JSON.stringify(resultCopy));
+        }
+      });
     }
-  });    
+  })
 });
 
 // Book Property
@@ -138,7 +173,7 @@ router.route('/bookproperty').post(function (req, res) {
   }
 
   console.log(userData);
-  pool.query('INSERT INTO bookings SET ?',userData, function (error,result) {
+  pool.query('INSERT INTO `bookings` SET ?',userData, function (error,result) {
     if (error) {
       console.log(error);
       console.log("unable to insert into bookings database");
@@ -147,6 +182,22 @@ router.route('/bookproperty').post(function (req, res) {
       console.log(result);
       console.log("Booking Added");
       res.status(200).send("Booking Added");
+    }
+  });    
+});
+
+// List all trips by a traveller
+router.route('/traveller/triplistings').post(function (req, res) {
+  console.log(req.body.bookedBy);
+  pool.query('SELECT * from `bookings` a INNER JOIN `property` b ON a.propertyID = b.uid where a.bookedBy = ? ', [req.body.bookedBy], function (error,result) {
+    if (error) {
+      console.log(error);
+      console.log("unable to search database");
+      res.status(400).send("unable to search database");
+    } else {
+      console.log(JSON.stringify(result));
+      res.status(200).send(JSON.stringify(result));
+      console.log("Trips Found");
     }
   });    
 });

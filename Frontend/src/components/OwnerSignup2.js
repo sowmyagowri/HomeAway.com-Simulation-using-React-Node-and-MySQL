@@ -150,7 +150,7 @@ class Signup2 extends Component{
         //redirect based on successful login
         let redirectVar = null;
         cookie.load('cookie1');
-        if(this.state.authFlag){
+        if(cookie.load('cookie1') === 'ownercookie'){
             redirectVar = <Redirect to= "/owner/propertypost"/>
         }
         return(
@@ -189,16 +189,16 @@ class Signup2 extends Component{
                     </div>
                 </div>
                 <div class="container">
-                 <div class="col-sm-6 col-sm-offset-6" style={{left: "400px"}}>
+                 <div class="col-sm-6" style={{width: "35%", left: "350px"}}>
                         <div class="login-form">
                             <br></br>
                             <div class="row">
-                                <div class="col-xs-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <input onChange = {this.firstnameChangeHandler} type="text" class="form-control" name="firstname" placeholder="First Name"/>
                                     </div>
                                 </div>
-                                <div class="col-xs-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <input onChange = {this.lastnameChangeHandler} type="text" class="form-control" name="lastname" placeholder="Last Name"/>
                                     </div>
@@ -216,9 +216,13 @@ class Signup2 extends Component{
                         </div>
                         <div class="mydiv"><span class="myspan">or</span></div>
                         <br></br>
-                        <button class="mybtn facebook_button">Log in with Facebook</button>
+                        <div>
+                            <button class="mybtn facebook_button">Log in with Facebook</button>
+                        </div>
                         <br></br>
-                        <button className="mybtn google_button" style = {{marginTop : "20px", marginBottom : "20px", color: "#787878", background: "#f3f3f3 url(google_logo.png) left no-repeat"}}>Log in with Google</button>
+                        <div>
+                            <button className="mybtn google_button" >Log in with Google</button>
+                        </div>
                         <br></br>
                         <div class="center" id= "yourdiv">
                             <font size="1">We don't post anything without your permission.

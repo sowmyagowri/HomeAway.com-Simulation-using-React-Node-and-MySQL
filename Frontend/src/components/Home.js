@@ -149,11 +149,11 @@ class Home extends Component {
         <Navbar style = {{backgroundColor: "transparent", background: "transparent", borderColor: "transparent"}}>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/" title = "HomeAway" className = "logo"><img src={require('./homeaway_white.svg')}/></a>
+              <a href="/" title = "HomeAway" className = "logo"><img alt="Homeaway White Logo" src={require('./homeaway_white.svg')}/></a>
             </Navbar.Brand>
           </Navbar.Header>
           <div>
-            <img src={require('./us_flag.png')}/>
+            <img alt="US Flag" src={require('./us_flag.png')}/>
             <button className="btn" style = {{fontColor : "#0067db", backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button">Trip Boards</button>
             {console.log(this.state.isTravelerLoggedIn )}
             {!this.state.isTravelerLoggedIn 
@@ -173,7 +173,7 @@ class Home extends Component {
                   <button id="white" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                   <div className="dropdown-menu">
                     <a className="dropdown-item" href="/Profile">Profile</a>
-                    <a className="dropdown-item" href="/MyTrips">My Trips</a>
+                    <a className="dropdown-item" href="/traveller/mytrips">My Trips</a>
                     <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
                   </div>
                 </div>

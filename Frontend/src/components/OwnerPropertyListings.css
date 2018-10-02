@@ -1,6 +1,13 @@
-.list-inline>li {
-    padding: 0 10px 0 0;
+.myh4{
+    font-family: Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif;
 }
+
+.myh6{
+    font-weight: 400;
+    font-size: 14px;
+    font-family: Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
 .container-pad {
     padding: 30px 15px;
     margin-left : 20px;
@@ -8,15 +15,15 @@
     width : 1600px;
 }
 
-.form-row{
-    margin-left: 0px;
+.form-row.myformrow{
+    margin-left: 250px;
 }
 .navbar.navbar-default >.container{
    max-width: 1800px;
 }
 
 .bgc-fff {
-    background-color: #fff!important;
+    background-color: rgb(216, 245, 157)!important;
 }
 .box-shad {
     -webkit-box-shadow: 1px 1px 0 rgba(0,0,0,.2);
@@ -52,16 +59,12 @@
     margin-bottom: 20px!important;
 }
 
-/* Color  */
-.clr-535353 {
-    color: #535353;
-}
 
 
 /** MEDIA QUERIES **/
 @media only screen and (max-width: 991px) {
     #property-listings .property-listing {
-        padding: 5px!important;
+        padding: 10px!important;
     }
     #property-listings .property-listing a {
         margin: 0;
@@ -104,6 +107,8 @@
     color :black;
     font-size: 20px;
     font-weight: 450;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mydescription{
@@ -116,6 +121,8 @@
     color :black;
     font-size: 15px;
     font-weight: 450;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mybedroom{
@@ -126,6 +133,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #type{
@@ -136,6 +145,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mybathroom{
@@ -146,6 +157,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mysleep{
@@ -156,6 +169,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mysymbol{
@@ -166,6 +181,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #myaddress{
@@ -177,6 +194,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mycity{
@@ -187,6 +206,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mystate{
@@ -197,6 +218,8 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
 }
 
 #mycountry{
@@ -207,4 +230,27 @@
     background-color: white;
     font-size: 15px;
     color :black;
+    font-family: Lato,Arial,Helvetica Neue,sans-serif;
+    background-color: rgb(216, 245, 157)!important;
+}
+
+.Hitinfo {
+    background: #f6f7f8;
+    height: 64px;
+    padding: 8px 12px 8px 12px;
+}
+.HitInfo__priceSuperlativeGroup{
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-flow: column wrap;
+    -webkit-box-align: start;
+    align-items: flex-start;
+}
+
+.HitInfo__price{
+    -webkit-box-ordinal-group: 6;
+    order: 5;
+    display: flex;
+    white-space: nowrap;
+    margin-right: 16px;
 }

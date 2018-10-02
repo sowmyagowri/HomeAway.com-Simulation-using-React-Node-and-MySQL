@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
+import './PropertyDetails.css';
 import 'typeface-roboto'
 import axios from 'axios';
 import cookie from 'react-cookies';
 import moment from 'moment';
 import {Navbar} from "react-bootstrap";
-import {Redirect} from 'react-router';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Helmet from 'react-helmet';
@@ -13,8 +13,6 @@ import Tab from 'react-web-tabs/lib/Tab';
 import TabPanel from 'react-web-tabs/lib/TabPanel';
 import TabList from 'react-web-tabs/lib/TabList';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
-var locationlon, locationlat, locationTitle;
 
 class PropertyDetails extends Component {
     constructor(props){
@@ -33,7 +31,7 @@ class PropertyDetails extends Component {
           isLoading : true,
           requestedDays : 0,
           price : 0,
-          rows: [{}],
+          propertyDetails: [{}],
           adate : false,
           ddate : false,
           pguests : false,
@@ -44,11 +42,10 @@ class PropertyDetails extends Component {
         this.fromDateChangeHandler = this.fromDateChangeHandler.bind(this);
         this.toDateChangeHandler = this.toDateChangeHandler.bind(this);
         this.noOfGuestsChangeHandler = this.noOfGuestsChangeHandler.bind(this);
-        this.submitBooking = this.submitBooking.bind(this)
-        this.hideAlert = this.hideAlert.bind(this)
+        this.submitBooking = this.submitBooking.bind(this);
     }
     
-    componentDidMount () {
+    componentWillMount () {
         console.log("In Property Details");
         var propertyID = this.state.propertyid;
 
@@ -58,9 +55,9 @@ class PropertyDetails extends Component {
             console.log("Status Code : ", response.status);
             if(response.status === 200){
                 console.log(response.data)
-                this.setState({rows : response.data})
+                this.setState({propertyDetails : response.data})
             }
-            console.log(this.state.rows.headline);
+            console.log(this.state.propertyDetails.headline);
         });
     }
     
@@ -114,9 +111,11 @@ class PropertyDetails extends Component {
     }
 
     logout = () => {
-      cookie.remove('travelercookie', {path: '/'})
-      console.log("cookie removed")
-      window.location = "/"
+        cookie.remove('cookie1', {path: '/'})
+        cookie.remove('cookie2', {path: '/'})
+        cookie.remove('cookie3', {path: '/'})
+        console.log("All cookies removed!")
+        window.location = "/"
     }
 
     shouldComponentUpdate(nextState) {
@@ -188,65 +187,25 @@ class PropertyDetails extends Component {
             });
     }
 
-    hideAlert() {
-        console.log('Hiding alert...');
-        this.setState({
-          alert: null
-        });
-      }
-    
     render(){
 
         let redirectVar = null;
-       if(cookie.load('cookie1')){
+        if(cookie.load('cookie1') === 'travellercookie'){
           this.state.isTravelerLoggedIn = true
-        } else {
-          redirectVar = <Redirect to = "/"/>
         } 
-    
-        //if (this.state.booked) {
-        //    this.addBooking()
-       // }
-
-        const {rows} = this.state;
+        const {propertyDetails} = this.state;
 
         var start = moment(this.state.bookingFromDate, "YYYY-MM-DD");
         var end = moment(this.state.bookingToDate, "YYYY-MM-DD");
         //Difference in number of days
         var difference = (moment.duration(end.diff(start)).asDays());
-        var price = difference * rows[0].baseRate;
+        var price = difference * propertyDetails[0].baseRate;
 
         this.state.price = price;
 
-        if(this.state.location === "Sunnyvale"){
-            locationlat = 32.736349,
-            locationlon = -117.177871,
-            locationTitle = this.state.city
-        }
-        if(this.state.location === "san diego"){
-            locationlat = 37.3688,
-            locationlon = -122.0363,
-            locationTitle = this.state.city
-        }
-        if(this.state.location === "los angeles") {
-            locationlat = 34.024212,
-            locationlon = -118.496475,
-            locationTitle = this.state.city
-        }
-        if(this.state.location === "new york") {
-            locationlat = 40.730610,
-            locationlon = -73.935242,
-            locationTitle = this.state.city
-        }
-        if(this.state.location === "san franscisco") {
-            locationlat = 37.773972,
-            locationlon = -122.431297,
-            locationTitle = this.state.city
-        }
 
         return(
           <div>
-           {redirectVar}
             <Helmet>
               <style>{'body { background-color: white; }'}</style>
             </Helmet>
@@ -257,7 +216,7 @@ class PropertyDetails extends Component {
                     </Navbar.Brand>
                 </Navbar.Header>
                 <div>
-                    <img src={require('./us_flag.png')}/>
+                    <img alt="US Flag" src={require('./us_flag.png')}/>
                     <button id="blue" className="btn" style = {{fontColor : "black", backgroundColor:"white", background:"white", borderColor:"white"}} type="button"><a href="#">Trip Boards</a></button>
                     {!this.state.isTravelerLoggedIn 
                     ?
@@ -276,7 +235,7 @@ class PropertyDetails extends Component {
                             <button id="blue" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                             <div className="dropdown-menu">
                                 <a className="dropdown-item" href="/Profile">Profile</a>
-                                <a className="dropdown-item" href="/MyTrips">My Trips</a>
+                                <a className="dropdown-item" href="/traveller/mytrips">My Trips</a>
                                 <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
                             </div>
                         </div>
@@ -328,15 +287,21 @@ class PropertyDetails extends Component {
                     <div className="form-row ">
                         <div className="form-group col-sm-8 FixedHeightContainer border" id = "property-listings" style ={{maxWidth : "1000px"}}>
                             <div style = {{background: "#D6EBF2"}}  className ="Content">
-                            <Carousel>
+                            <Carousel autoPlay showThumbs="false">
                                 <div>
-                                    <img src={require('./house1.jpeg')}/>
+                                    <img alt="Image 1" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image1}`} />
                                 </div>
                                 <div>
-                                    <img src={require('./house2.jpeg')}/>
+                                    <img alt="Image 2" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image2}`} />
                                 </div>
                                 <div>
-                                    <img src={require('./house3.jpeg')}/>
+                                    <img alt="Image 3" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image3}`} />
+                                </div>
+                                <div>
+                                    <img alt="Image 4" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image4}`} />
+                                </div>
+                                <div>
+                                    <img alt="Image 5" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image5}`} />
                                 </div>
                             </Carousel>
 
@@ -353,34 +318,28 @@ class PropertyDetails extends Component {
                                     <div className = "col-md-2">
                                         <Tab tabFor="two" style = {{borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Amenities</a></Tab>
                                     </div>
-                                    <div className = "col-md-2">
-                                        <Tab tabFor="three" style = {{borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Map</a></Tab>
-                                    </div>
-                                    <div className = "col-md-2">
-                                        <Tab tabFor="four" style = {{borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Availability</a></Tab>
-                                    </div>
                                     </div>
                                 </div>
                                 </TabList>
                                 <TabPanel tabId="one">
                                     <div className = "container" style = {{marginTop : "20px"}}>
-                                        <h4 className="media-heading"><img style={{height: "35px"}} src={require('./maps-icon.png')}/>{rows[0].headline}</h4>
+                                        <h4 className="media-heading"><img style={{height: "35px"}} alt="Small Map" src={require('./maps-icon.png')}/>{propertyDetails[0].headline}</h4>
                                         <div className = "row" style = {{marginTop :"20px"}}>
-                                        <h2><img style={{height: "35px"}} src={require('./pindrop.svg')}/>{rows[0].city}, {rows[0].state}, {rows[0].country}</h2>
+                                        <h2><img alt="Pindrop Sign" style={{height: "35px"}} src={require('./pindrop.png')}/>{propertyDetails[0].city}, {propertyDetails[0].state}, {propertyDetails[0].country}</h2>
                                         </div>
                                         <div className = "row" style = {{marginTop :"20px"}}>
                                         <ul className="list-inline">
-                                            <li className = "list-inline-item">{rows[0].propertyType}</li>
-                                            <li className = "list-inline-item dot"> </li>
-                                            <li className = "list-inline-item"> {rows[0].bedrooms} BR</li>
-                                            <li className = "list-inline-item dot"> </li>
-                                            <li className = "list-inline-item"> {rows[0].bathrooms} BA</li>
+                                            <li className = "list-inline-item">{propertyDetails[0].propertyType}</li>
                                             <li className = "list-inline-item dot"></li>
-                                            <li className = "list-inline-item"> Sleeps  {rows[0].sleeps}</li>
+                                            <li className = "list-inline-item"> {propertyDetails[0].bedrooms} BR</li>
+                                            <li className = "list-inline-item dot"></li>
+                                            <li className = "list-inline-item"> {propertyDetails[0].bathrooms} BA</li>
+                                            <li className = "list-inline-item dot"></li>
+                                            <li className = "list-inline-item"> Sleeps  {propertyDetails[0].sleeps}</li>
                                         </ul>
                                         </div>
                                         <div className = "row" style = {{marginTop :"10px"}}>
-                                        <p className = "para-font">{rows[0].description}></p>
+                                        <p className = "para-font">{propertyDetails[0].description}</p>
                                         </div> 
                                     </div>
                                 </TabPanel>
@@ -388,26 +347,9 @@ class PropertyDetails extends Component {
                                 <div className = "container" style = {{marginTop : "20px"}}>
                                         <hr/> 
                                         <div className = "row" style = {{marginTop :"20px"}}>
-                                        <p className = "para-font">{rows[0].amenities}></p>
+                                        <p className = "para-font">{propertyDetails[0].amenities}</p>
                                         </div>
                                     </div>
-                                </TabPanel>
-                                <TabPanel tabId = "three">
-                                <div className = "form-group col-sm-5">
-                                <Map
-                                id="myMap"
-                                options={{
-                                    center: { lat: locationlat, lng:  locationlon},
-                                zoom: 8
-                                }}
-                                onMapLoad={map => {
-                                var marker = new window.google.maps.Marker({
-                                    position: { lat: locationlat, lng:  locationlon},
-                                    map: map,
-                                    title: locationTitle
-                                });
-                                }}
-                            /> </div>
                                 </TabPanel>
                             </Tabs>
                             </div>
@@ -416,12 +358,11 @@ class PropertyDetails extends Component {
                         <div className = "form-group col-md-3 border" style = {{height: "510px"}} >
                             <div className = "card-body " style = {{background: "#b4ecb4", width : "385px"}}>
                                 <div className="row">
-                                    <div className="col-xs-1">
-                                        <h2>$ {rows[0].baseRate}</h2></div>
-                                    <div className="col-sm-2" style = {{marginTop : "10px"}}><h6><strong>avg/night</strong></h6>
-                                    </div>
+                                    <div className="col-xs-1"><h4 className="media-heading">$ {propertyDetails[0].baseRate}</h4></div>
+                                    <div className="col-sm-2" style = {{marginTop : "6px"}}><h6 className="media-heading">avg/night</h6>
                                 </div>
-                                <div className = "container" style = {{marginTop : "30px"}}>
+                            </div>
+                            <div className = "container" style = {{marginTop : "30px"}}>
                                 <div className="row">
                                     <div className="col-md-offset-3">
                                         <div className="form-group" style = {{fontFamily: "Lato,Roboto,Arial,Helvetica Neue,Helvetica,sans-serif"}}>
@@ -482,8 +423,8 @@ class PropertyDetails extends Component {
                                             Book Now
                                         </button>
                                         {this.state.alert}
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -494,42 +435,5 @@ class PropertyDetails extends Component {
     )
     }
 }
-
-class Map extends Component {
-    constructor(props) {
-      super(props);
-      this.onScriptLoad = this.onScriptLoad.bind(this)
-    }
-  
-    onScriptLoad() {
-      const map = new window.google.maps.Map(
-        document.getElementById(this.props.id),
-        this.props.options);
-      this.props.onMapLoad(map)
-    }
-  
-    componentDidMount() { 
-      if (!window.google) {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.src = `https://maps.google.com/maps/api/js?key=AIzaSyCpk67Ig02fwUNe7in4kt0H23kahGTbLm8`;
-        var x = document.getElementsByTagName('script')[0];
-        x.parentNode.insertBefore(s, x);
-        // Below is important. 
-        //We cannot access google.maps until it's finished loading
-        s.addEventListener('load', e => {
-          this.onScriptLoad()
-        })
-      } else {
-        this.onScriptLoad()
-      }
-    }
-  
-    render() {
-      return (
-        <div style = {{width : "800px", height :"700px"}} id={this.props.id} />
-      );
-    }
-  }
   
 export default PropertyDetails;
