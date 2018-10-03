@@ -87,31 +87,32 @@ class OwnerPropertyListings extends Component {
                                 <strong style ={{fontSize: "20px"}}><span className = "Price__value">${allListings[i].currency + ' ' + allListings[i].baseRate + ' /night'}</span></strong>
                             </span>
 
-                            <br></br><br></br>
+                            <br></br><br></br><br></br>
                             {allListings[i].bookedBy.length > 0
-                            ?
-                            (   
-                                <div>
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Booked By</th>
-                                                <th>From</th>
-                                                <th>To</th>
-                                            </tr>
-                                        </thead>
-                                        { this.renderbookingTable(allListings[i]) }
-                                    </table>
-                                </div>
-                            )
-                            :
-                            (
-                            <div className = "container-full">
-                                <div className="container-pad">
-                                    <h4> No Booking History! </h4>
-                                </div>
-                            </div>
-                            )
+                                ?
+                                (   
+                                    <div>
+                                        <table class="table table-striped" id="bookings">
+                                            <thead>
+                                                <tr>
+                                                <   th>Booking ID</th>
+                                                    <th>Booked By</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>No. Of Guests</th>
+                                                    <th>Price</th>
+                                                </tr>
+                                            </thead>
+                                            { this.renderbookingTable(allListings[i]) }
+                                        </table>
+                                    </div>
+                                )
+                                :
+                                (
+                                    <div className = "container-full">
+                                        <h2> No Booking History! </h2>
+                                    </div>
+                                )
                             }
                         </div>      
                     </div>
@@ -121,15 +122,17 @@ class OwnerPropertyListings extends Component {
     }
 
     renderbookingTable (listingData) {
-        const {allListings} = this.state;
         const {isLoading} = this.state;
         if(!isLoading){
-            console.log("generating content...")
+            console.log("generating table content...")
             return Object.keys(listingData.bookedBy).map( (j) => {
                 return <tbody data-ng-repeat="bookingData in listingData[i]">
+                        <td>{listingData.bookingID[j]}</td>
                         <td>{listingData.bookedBy[j]}</td>
                         <td>{listingData.bookedFrom[j]}</td>
                         <td>{listingData.bookedTo[j]}</td>
+                        <td>{listingData.noOfGuests[j]}</td>
+                        <td>$ {listingData.price[j]}</td>
                 </tbody>
             });
         }

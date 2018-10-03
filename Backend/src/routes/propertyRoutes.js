@@ -120,9 +120,12 @@ router.route('/owner/propertylistings').post(function (req, res) {
       
       var resultCopy = result;
       async.eachOfSeries (resultCopy, function(value, i, inner_callback) {
+        value.bookingID = []
         value.bookedFrom = []
         value.bookedTo = []
         value.bookedBy = []
+        value.noOfGuests = []
+        value.price = []
         console.log("Property ID: ", value.uid)
         pool.query('SELECT * from `bookings` a JOIN `users` b ON a.bookedBy = b.email where propertyID = ? ', [value.uid], function (error,bookingResult) {
           if (!error){
@@ -137,6 +140,9 @@ router.route('/owner/propertylistings').post(function (req, res) {
                 value.bookedTo.push(tempbookedTo)
                 var tempbookedBy = bookingResult[j].firstname + ' ' + bookingResult[j].lastname
                 value.bookedBy.push(tempbookedBy)
+                value.noOfGuests.push(bookingResult[j].NoOfGuests)
+                value.price.push(bookingResult[j].price)
+                value.bookingID.push(bookingResult[j].bookingID)
               })
             }
             inner_callback(null);

@@ -188,7 +188,8 @@ class Home extends Component {
           <div className = "container">
             <div className="jumbotron jumbotron-fluid" style = {{background: "none"}}>
               <div className="container" style = {{marginTop :"10%"}}>
-                  <h1 style ={{color: "white", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif"}}>Your vacation starts here. . .</h1>
+                  <h1 style ={{color: "white", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif"}}>Book beach houses, cabins,</h1>
+                  <h1 style ={{color: "white", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif"}}>Condos and more, worldwide</h1>
                   <div className="row">
                     <div className="col-md-4 col-md-offset-3">
                       <div className="form-group">

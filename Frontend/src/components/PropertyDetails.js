@@ -189,7 +189,6 @@ class PropertyDetails extends Component {
 
     render(){
 
-        let redirectVar = null;
         if(cookie.load('cookie1') === 'travellercookie'){
           this.state.isTravelerLoggedIn = true
         } 
@@ -202,7 +201,6 @@ class PropertyDetails extends Component {
         var price = difference * propertyDetails[0].baseRate;
 
         this.state.price = price;
-
 
         return(
           <div>
@@ -228,9 +226,9 @@ class PropertyDetails extends Component {
                                 <a className="dropdown-item" href="/owner/login">Owner Login</a>
                             </div>
                         </div>
-                        )
-                        :
-                        (
+                    )
+                    :
+                    (
                         <div className="btn btn-group">
                             <button id="blue" className="dropdown-toggle"  style = {{backgroundColor:"transparent", background:"transparent", borderColor:"transparent"}} type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hello {cookie.load('cookie3')}</button>
                             <div className="dropdown-menu">
@@ -239,7 +237,7 @@ class PropertyDetails extends Component {
                                 <a className="dropdown-item" href="#" onClick= {this.logout}>Logout</a>
                             </div>
                         </div>
-                        )
+                    )
                     }
                     <button className="btn btn-group" style = {{color: "#fff", fontFamily: "Lato,Arial,Helvetica Neue,sans-serif", height: "40px", backgroundColor:"#fff", width: "200px", borderRadius: 25, borderColor: "#ffffff"}} data-effect="ripple" type="button" tabIndex="5" data-loading-animation="true">
                     <a href="/owner/login">List your Property</a>
@@ -287,11 +285,13 @@ class PropertyDetails extends Component {
                     <div className="form-row ">
                         <div className="form-group col-sm-8 FixedHeightContainer border" id = "property-listings" style ={{maxWidth : "1000px"}}>
                             <div style = {{background: "#D6EBF2"}}  className ="Content">
-                            <Carousel autoPlay showThumbs="false">
+                            <Carousel autoPlay showThumbs={false}>
+                            
                                 <div>
                                     <img alt="Image 1" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image1}`} />
                                 </div>
-                                <div>
+                            
+                             <div>
                                     <img alt="Image 2" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image2}`} />
                                 </div>
                                 <div>
@@ -300,23 +300,23 @@ class PropertyDetails extends Component {
                                 <div>
                                     <img alt="Image 4" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image4}`} />
                                 </div>
-                                <div>
+                            <div>
                                     <img alt="Image 5" className="img-responsive" src={`http://localhost:3001/uploads/${propertyDetails[0].image5}`} />
                                 </div>
+                            
                             </Carousel>
 
                             <div>
-                            <Tabs
-                                defaultTab="one"
-                                onChange={(tabId) => { console.log(tabId) }}>
+                            <Tabs defaultTab="one"
+                            onChange={(tabID) => { console.log(tabID)}}>
                                 <TabList>
                                 <div className="topnav">
                                     <div className = "row">
                                     <div className = "col-md-2">
-                                        <Tab tabFor="one" style = {{borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Overview</a></Tab>
+                                        <Tab tabFor="one" style = {{marginTop : "20px", borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Overview</a></Tab>
                                     </div>
                                     <div className = "col-md-2">
-                                        <Tab tabFor="two" style = {{borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Amenities</a></Tab>
+                                        <Tab tabFor="two" style = {{marginTop : "20px", borderRight :"none", borderLeft :"none", padding : "0 0 0 0"}}><a>Amenities</a></Tab>
                                     </div>
                                     </div>
                                 </div>

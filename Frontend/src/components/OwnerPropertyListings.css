@@ -254,3 +254,23 @@
     white-space: nowrap;
     margin-right: 16px;
 }
+
+#bookings {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#bookings td, #bookings th {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+#bookings th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}

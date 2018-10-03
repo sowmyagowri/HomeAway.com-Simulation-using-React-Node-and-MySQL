@@ -93,7 +93,7 @@ class PropertySearchResults extends Component {
                                     <li className = "list-inline-item"> Sleeps  {searchData[i].sleeps}</li>
                                 </ul>
                                 <br></br><br></br>
-                                <input id = "heading" value = {searchData[i].currency + ' ' + searchData[i].baseRate} type="text" readOnly="readOnly" />
+                                <input style ={{background: "rgb(216, 245, 157)", width: "595px"}} id = "heading" value = {searchData[i].currency + ' ' + searchData[i].baseRate} type="text" readOnly="readOnly" />
 
                                 <Link className="view" to={`/property/${searchData[i].uid}/${this.state.location}/${this.state.fromdate}/${this.state.todate}/${this.state.noOfGuests}`} target="_blank">Dummy Link</Link>
                         </div>
