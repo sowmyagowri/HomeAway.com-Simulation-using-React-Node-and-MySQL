@@ -32,7 +32,6 @@ router.route('/owner/listproperty').post(upload.array('uploadedPhoto',5), functi
   console.log(stringObj);
   console.log("In Owner Property Post");
 
-  console.log(req.files.length);
   var userData = {
     listedBy: req.body.listedBy,
     startDate: req.body.startDate,

@@ -4,24 +4,7 @@ var express = require('express');
 var app = express();
 var pool = require('../models/UserDB.js');
 var router = express.Router();
-
-var crypto = require('crypto'),
-    algorithm = 'aes-256-ctr',
-    password = 'd6F3Efeq';
-
-function encrypt(text){
-  var cipher = crypto.createCipher(algorithm,password)
-  var crypted = cipher.update(text,'utf8','hex')
-  crypted += cipher.final('hex');
-  return crypted;
-}
-
-function decrypt(text){
-  var decipher = crypto.createDecipher(algorithm,password)
-  var dec = decipher.update(text,'hex','utf8')
-  dec += decipher.final('utf8');
-  return dec;
-}
+var crypt = require('../models/bcrypt.js');
 
 // Validate traveller login user details
 router.route('/traveller/login').post(function (req, res) {
@@ -37,17 +20,24 @@ router.route('/traveller/login').post(function (req, res) {
       res.status(400).send("user does not exist");
     } else {
       if (rows.length > 0) {
-        decryptedString = decrypt(rows[0].password);
-        if (password == decryptedString) {
-          res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-          req.session.user = rows[0].email;
-          res.status(200).send("Login Successful")
-        } 
+        // Check if password matches
+        crypt.compareHash(req.body.password, rows[0].password, function (err, isMatch) {
+          if (isMatch && !err) {
+            res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+            req.session.user = rows[0].email;
+            res.status(200).send("Login Successful")
+          } else {
+            response.status(401).json({
+              success: false,
+              message: 'Authentication failed. Passwords did not match.'
+            })
+          }
+        })
       }
     }
-  })
+  });
 });
 
 // Validate owner login user details
@@ -64,21 +54,21 @@ router.route('/owner/login').post(function (req, res) {
       res.status(400).send("user does not exist");
     } else {
       if (rows.length > 0) {
-        decryptedString = decrypt(rows[0].password);
-        if (password == decryptedString && rows[0].isOwner == 'Y') {
-          res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-          req.session.user = rows[0].email;
-          console.log("Owner found in DB");
-          res.status(200).send("Login Successful")
-        }
-        else{
-          res.status(400).send("Login not successful") 
-        }
+        crypt.compareHash(req.body.password, rows[0].password, function (err, isMatch) {
+          if (isMatch && !err && rows[0].isOwner == 'Y') {
+            res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+            req.session.user = rows[0].email;
+            console.log("Owner found in DB");
+            res.status(200).send("Login Successful")
+          } else {
+            res.status(401).send("Login not successful") 
+          }
+        })
       }
-      }
-    })
+    }
+  });
 });
 
 
@@ -91,17 +81,6 @@ router.route('/traveller/signup').post(function (req, res) {
   var today = new Date();
   var year = today.getFullYear();
   
-  var encryptedString = encrypt(req.body.password);
-
-  var userData = {
-    "firstname": req.body.firstname,
-    "lastname": req.body.lastname,
-    "email": trimemail,
-    "password": encryptedString,
-    "created": year,
-    "isOwner": 'N'
-  }
-
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err){
         console.log(err);
@@ -112,20 +91,37 @@ router.route('/traveller/signup').post(function (req, res) {
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        pool.query('INSERT INTO users SET ?',userData, function (err,rows) {
-        if (err) {
-          console.log("unable to insert into database");
-          res.status(400).send("unable to insert into database");
-        } else {
-          console.log("User Added");
-          res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.status(200).send("User Added");
-        }});
+        
+        crypt.createHash(req.body.password, function (response) {
+          encryptedPassword = response;
+
+          var userData = {
+            "firstname": req.body.firstname,
+            "lastname": req.body.lastname,
+            "email": trimemail,
+            "password": encryptedPassword,
+            "created": year,
+            "isOwner": 'N'
+          }
+        
+          //Save the user in database
+          pool.query('INSERT INTO users SET ?',userData, function (err) {
+          if (err) {
+            console.log("unable to insert into database", err);
+            res.status(400).send("unable to insert into database");
+          } else {
+            console.log("User Added");
+            res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.status(200).send("User Added");
+          }});
+      }, function (err) {
+          console.log(err);
+        });
       }
     }
-  })
+  });
 });
 
 // Add owner users
@@ -133,19 +129,9 @@ router.route('/owner/signup').post(function (req, res) {
   console.log("In owner Signup Post");
   email = req.body.email.toLowerCase();
   trimemail = email.trim();
-  var year = new Date();
+  var today = new Date();
+  var year = today.getFullYear();
   
-  var encryptedString = encrypt(req.body.password);
-
-  var userData = {
-    "firstname": req.body.firstname,
-    "lastname": req.body.lastname,
-    "email": trimemail,
-    "password": encryptedString,
-    "created": year,
-    "isOwner": 'Y'
-  }
-
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err){
         console.log(err);
@@ -157,34 +143,50 @@ router.route('/owner/signup').post(function (req, res) {
           console.log("Owner already exists");
           res.status(400).send("Owner already exists");
         } else{
+
+          //Update traveller as owner in database
           var sqlquery = "UPDATE users SET isOwner = 'Y' where email = ?";
           pool.query(sqlquery, [trimemail], (err) =>  {
             if (err) {
               console.log(err);
               console.log("unable to update user to owner");
               res.status(400).send("unable to update user to owner");
-            }
-            else{
+            } else{
               console.log("Owner profile added to traveller login");
               res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-              res.status(200).send("Owner profile added to traveller login");
+              res.status(201).send("Owner profile added to traveller login");
             }
           })
         }
       } else {
-        pool.query('INSERT INTO users SET ?',userData, function (err) {
-        if (err) {
-          console.log("unable to insert into database");
-          res.status(400).send("unable to insert into database");
-        } else {
-          console.log("User Added");
-          res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-          res.status(200).send("Owner Added");
-        }});
+
+        crypt.createHash(req.body.password, function (response) {
+          encryptedPassword = response;
+      
+          var userData = {
+            "firstname": req.body.firstname,
+            "lastname": req.body.lastname,
+            "email": trimemail,
+            "password": encryptedPassword,
+            "created": year,
+            "isOwner": 'Y'
+          }
+      
+          //Save the user in database
+          pool.query('INSERT INTO users SET ?',userData, function (err) {
+          if (err) {
+            console.log("unable to insert into database");
+            res.status(400).send("unable to insert into database");
+          } else {
+            console.log("Owner Added");
+            res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
+            res.status(200).send("Owner Added");
+          }});
+        })
       }
     }
   })
