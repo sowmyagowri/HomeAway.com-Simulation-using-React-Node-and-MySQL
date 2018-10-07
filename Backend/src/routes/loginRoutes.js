@@ -1,7 +1,5 @@
 //Libraries
 var express = require('express');
-// App Instance
-var app = express();
 var pool = require('../models/UserDB.js');
 var router = express.Router();
 var crypt = require('../models/bcrypt.js');

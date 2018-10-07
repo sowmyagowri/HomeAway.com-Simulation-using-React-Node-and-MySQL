@@ -1,6 +1,4 @@
 var express = require('express');
-// App Instance
-var app = express();
 var pool = require('../models/UserDB.js');
 var router = express.Router();
 var async = require('async');
@@ -96,8 +94,8 @@ router.route('/property/:id').get(function (req, res) {
   pool.query('SELECT * from `property` where uid = ? ', [req.params.id], function (error,result) {
     if (error) {
       console.log(error);
-      console.log("unable to search database");
-      res.status(400).send("unable to search database");
+      console.log("Property not found");
+      res.status(400).send("Property not found");
     } else {
       console.log(JSON.stringify(result));
       res.status(200).send(JSON.stringify(result));
@@ -113,8 +111,8 @@ router.route('/owner/propertylistings').post(function (req, res) {
   pool.query('SELECT * from `property` where listedBy = ? ', [req.body.listedBy], function (error,result) {
     if (error) {
       console.log(error);
-      console.log("unable to search database");
-      res.status(400).send("unable to search database");
+      console.log("Property not found");
+      res.status(400).send("Property not found");
     } else {
       
       var resultCopy = result;
@@ -197,8 +195,8 @@ router.route('/traveller/triplistings').post(function (req, res) {
   pool.query('SELECT * from `bookings` a INNER JOIN `property` b ON a.propertyID = b.uid where a.bookedBy = ? ', [req.body.bookedBy], function (error,result) {
     if (error) {
       console.log(error);
-      console.log("unable to search database");
-      res.status(400).send("unable to search database");
+      console.log("Trips not found");
+      res.status(400).send("Trips not found");
     } else {
       console.log(JSON.stringify(result));
       res.status(200).send(JSON.stringify(result));

@@ -41,6 +41,7 @@ pool.query('select * from users',  function(err, rows){
 // Routes and Backend Funcioncalities
 var loginRoutes = require('./src/routes/loginRoutes');
 var propertyRoutes = require('./src/routes/propertyRoutes');
+var propertySearch = require('./src/routes/propertysearchwithoutpooling');
 
 app.use(express.static('public'));
 //use cors to allow cross origin resource sharing
@@ -49,6 +50,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(basePath, loginRoutes);
 app.use(basePath, propertyRoutes);
+app.use(basePath, propertySearch);
 app.use('/uploads', express.static(path.join(__dirname, '/uploads/')));
 
 
