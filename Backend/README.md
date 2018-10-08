@@ -5,6 +5,7 @@ How to run HomeAway backend?
   - Install required dependencies using npm install
   - Import the DB structures and data from the file SQLDBDump.sql
   - Run HomeAway back end using npm start
+  - Test API calls with Mocha using npm test
 
 How can I change port, if 3001 port is occupied?
   - Open app.js file in the backend directory

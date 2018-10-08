@@ -15,7 +15,7 @@ router.route('/traveller/login').post(function (req, res) {
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err) {
       console.log(err);
-      res.status(400).send("user does not exist");
+      res.status(400).json({responseMessage: 'User does not exist'});
     } else {
       if (rows.length > 0) {
         // Check if password matches
@@ -25,12 +25,9 @@ router.route('/traveller/login').post(function (req, res) {
             res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
             req.session.user = rows[0].email;
-            res.status(200).send("Login Successful")
+            res.status(200).json({responseMessage: 'Login Successful'});
           } else {
-            response.status(401).json({
-              success: false,
-              message: 'Authentication failed. Passwords did not match.'
-            })
+            res.status(401).json({responseMessage: 'Authentication failed. Passwords did not match.'})
           }
         })
       }
@@ -49,7 +46,7 @@ router.route('/owner/login').post(function (req, res) {
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err) {
       console.log(err);
-      res.status(400).send("user does not exist");
+      res.status(400).json({responseMessage: 'User does not exist'});
     } else {
       if (rows.length > 0) {
         crypt.compareHash(req.body.password, rows[0].password, function (err, isMatch) {
@@ -59,9 +56,9 @@ router.route('/owner/login').post(function (req, res) {
             res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
             req.session.user = rows[0].email;
             console.log("Owner found in DB");
-            res.status(200).send("Login Successful")
+            res.status(200).json({responseMessage: 'Login Successful'});
           } else {
-            res.status(401).send("Login not successful") 
+            res.status(401).json({responseMessage: 'Login Not Successful'});
           }
         })
       }
@@ -83,11 +80,11 @@ router.route('/traveller/signup').post(function (req, res) {
     if (err){
         console.log(err);
         console.log("unable to read the database");
-        res.status(400).send("unable to read the database");
+        res.status(400).json({responseMessage: 'unable to read the users database'});
     } else {
       if (rows.length > 0) {
         console.log("User already exists");
-        res.status(400).send("User already exists");
+        res.status(400).json({responseMessage: 'User already exists'});
       } else {
         
         crypt.createHash(req.body.password, function (response) {
@@ -112,7 +109,7 @@ router.route('/traveller/signup').post(function (req, res) {
             res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-            res.status(200).send("User Added");
+            res.status(200).json({responseMessage: 'User Added'});
           }});
       }, function (err) {
           console.log(err);
@@ -134,12 +131,12 @@ router.route('/owner/signup').post(function (req, res) {
     if (err){
         console.log(err);
         console.log("unable to read the database");
-        res.status(400).send("unable to read the database");
+        res.status(400).json({responseMessage: 'unable to read the users database'});
     } else {
       if (rows.length > 0) {
         if (rows[0].isOwner == 'Y') {
           console.log("Owner already exists");
-          res.status(400).send("Owner already exists");
+          res.status(400).json({responseMessage: 'Owner already exists'});
         } else{
 
           //Update traveller as owner in database
@@ -148,13 +145,13 @@ router.route('/owner/signup').post(function (req, res) {
             if (err) {
               console.log(err);
               console.log("unable to update user to owner");
-              res.status(400).send("unable to update user to owner");
+              res.status(400).json({responseMessage: 'unable to update user to owner'});
             } else{
               console.log("Owner profile added to traveller login");
               res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-              res.status(201).send("Owner profile added to traveller login");
+              res.status(200).json({responseMessage: 'Owner profile added to traveller login'});
             }
           })
         }
@@ -176,13 +173,13 @@ router.route('/owner/signup').post(function (req, res) {
           pool.query('INSERT INTO users SET ?',userData, function (err) {
           if (err) {
             console.log("unable to insert into database");
-            res.status(400).send("unable to insert into database");
+            res.status(400).json({responseMessage: 'unable to insert into users database'});
           } else {
             console.log("Owner Added");
             res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-            res.status(200).send("Owner Added");
+            res.status(200).json({responseMessage: 'Owner Added'});
           }});
         })
       }
@@ -198,9 +195,10 @@ router.route('/profile').post(function (req, res) {
   pool.query('SELECT * FROM users WHERE email = ?', [input_email], (err, result) => {
     if (err){
       console.log(err);
-      res.status(400).send("User not found");
+      res.status(400).json({responseMessage: 'User not found'});
     }else {
-      res.status(200).send(JSON.stringify(result));
+      res.writeHead(200, {'content-type':'application/json'});
+      res.end(JSON.stringify(result));
     }
   })
 });
@@ -230,14 +228,15 @@ router.route('/profilesave').post(function (req, res) {
     if (err) {
       console.log(err);
       console.log("unable to update database");
-      res.status(400).send("unable to update database");
+      res.status(400).json({responseMessage: 'unable to update database'});
     } else {
       pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, result) => {
         if (err){
           console.log(err);
-          res.status(400).send("User not found");
+          res.status(400).json({responseMessage: 'User not found'});
         }else {
-          res.status(200).send(JSON.stringify(result));
+          res.writeHead(200, {'content-type':'application/json'});
+          res.end(JSON.stringify(result));
         }
       })
     }
