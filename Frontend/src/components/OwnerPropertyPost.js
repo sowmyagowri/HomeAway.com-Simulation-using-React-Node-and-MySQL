@@ -222,11 +222,9 @@ addProperty = (e) => {
       if(response.data) {
         console.log("Successful post property");
         this.setState ({posted: true})
-      } else {
-        console.log("Post Property Error")
       }
     })
-    .catch(function(error) {
+    .catch(error => {
       console.log("Post Property Server error")
   })
 }

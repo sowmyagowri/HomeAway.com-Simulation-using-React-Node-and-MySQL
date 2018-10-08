@@ -5,7 +5,6 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Navbar} from "react-bootstrap";
 import Helmet from 'react-helmet';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 var longitude, lattitude, locationTitle;
@@ -219,29 +218,29 @@ class PropertySearchResults extends Component {
 
     render(){
         if(this.state.location.toLowerCase() === "san diego"){
-            lattitude = 32.736349,
-            longitude = -117.177871,
+            lattitude = 32.736349;
+            longitude = -117.177871;
             locationTitle = this.state.location
         }
         if(this.state.location.toLowerCase() === "sunnyvale"){
             console.log("I am in location");
-            lattitude = 37.3688,
-            longitude = -122.0363,
+            lattitude = 37.3688;
+            longitude = -122.0363;
             locationTitle = this.state.location
             }
         if(this.state.location.toLowerCase() === "los angeles") {
-            lattitude = 34.024212,
-            longitude = -118.496475,
+            lattitude = 34.024212;
+            longitude = -118.496475;
             locationTitle = this.state.location
         }
         if(this.state.location.toLowerCase() === "new york") {
-            lattitude = 40.730610,
-            longitude = -73.935242,
+            lattitude = 40.730610;
+            longitude = -73.935242;
             locationTitle = this.state.location
         }
         if(this.state.location.toLowerCase() === "san franscisco") {
-            lattitude = 37.773972,
-            longitude = -122.431297,
+            lattitude = 37.773972;
+            longitude = -122.431297;
             locationTitle = this.state.location
         }
         console.log('cookie1');
@@ -249,7 +248,7 @@ class PropertySearchResults extends Component {
             this.state.isTravelerLoggedIn = true
         }
 
-        if (this.state.searchData.length == 0) {
+        if (this.state.searchData.length === 0) {
             this.state.detailsFetched = false 
         }
         else {

@@ -52,45 +52,45 @@ class TravellerTripListings extends Component {
         const {allTrips} = this.state;
         const {isLoading} = this.state;
         if(!isLoading){
+            console.log("generating content...")
             return Object.keys(allTrips).map((i) => {
                     return <div className="brdr bgc-fff pad-10 box-shad btm-mrg-20 myborder1 property-listing" key={allTrips[i].ID}>
                     <div className="media">
                         <a className="pull-left" href="#" target="_parent">
-                        <img alt="Thumbnail View of Property" className="img-responsive" src="http://images.prd.mris.com/image/V2/1/Yu59d899Ocpyr_RnF0-8qNJX1oYibjwp9TiLy-bZvU9vRJ2iC1zSQgFwW-fTCs6tVkKrj99s7FFm5Ygwl88xIA.jpg"/></a>
-                        <div className="clearfix visible-sm myborder1"> </div>
-                        <div className="media-body fnt-smaller">
-                                <input id = "myheading" value = {allTrips[i].headline} type="text" readonly="readonly" />
-                                <br></br><br></br>
-                                <input id = "mydescription" value = {allTrips[i].description} type="text" readonly="readonly" />
-                                <br></br><br></br>
-                                <input id = "myaddress" value = {allTrips[i].streetAddress} type="text" readonly="readonly" />
-                                <br></br>
-                                <input id = "mycity" value = {allTrips[i].city} type="text" readonly="readonly" />
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = " " />
-                                <input id = "mystate" value = {allTrips[i].state} type="text" readonly="readonly" />
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = " " />
-                                <input id = "mycountry" value = {allTrips[i].country} type="text" readonly="readonly" />
-                                <br></br><br></br>
-                                <input id = "type" value = {allTrips[i].propertyType} type="text" readonly="readonly" />
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "mybedroom" value = {allTrips[i].bedrooms} type="text" readonly="readonly" />
-                                <input id = "mybedroom" type="text" readonly="readonly" placeholder = "BR"/>
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "mybathroom" value = {allTrips[i].bathrooms} type="text" readonly="readonly" />
-                                <input id = "mybathroom" type="text" readonly="readonly" placeholder = "BA"/>
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "mysleep" type="text" readonly="readonly" placeholder = "Sleeps"/>
-                                <input id = "mybedroom" value = {allTrips[i].sleeps} type="text" readonly="readonly" />
-                                <input id = "mysymbol" type="text" readonly="readonly" placeholder = "|" />
-                                <input id = "mysleep" type="text" readonly="readonly" placeholder = "MinStay"/>
-                                <input id = "mysleep" value = {allTrips[i].minStay} type="text" readonly="readonly" />
-                                <br></br><br></br>
-                                <input id = "myheading" value = {allTrips[i].currency + ' ' + allTrips[i].baseRate} type="text" readonly="readonly" />
-                        </div>
+                        <img alt="Thumbnail View of Property" className="img-responsive" src={`http://localhost:3001/uploads/${allTrips[0].image1}`} /></a>
+                        <div className="media-body">  
+                            <h4 className="myh4">{allTrips[i].headline}</h4>
+                            <h6 className="myh6">{allTrips[i].description}</h6>
+  
+                            <ul className="list-inline">
+                                <li className = "list-inline-item"><img alt="Pindrop Sign" style={{height: "35px"}} src={require('./pindrop.png')}/></li>
+                                <li className = "list-inline-item">{allTrips[i].streetAddress}</li>
+                                <li className = "list-inline-item">{allTrips[i].city}</li>
+                                <li className = "list-inline-item">{allTrips[i].state}</li>
+                                <li className = "list-inline-item">{allTrips[i].country}</li>
+                            </ul>
+    
+                            <ul className="list-inline">
+                                <li className = "list-inline-item">{allTrips[i].propertyType}</li>
+                                <li className = "list-inline-item dot"> </li>
+                                <li className = "list-inline-item"> {allTrips[i].bedrooms} BR</li>
+                                <li className = "list-inline-item dot"> </li>
+                                <li className = "list-inline-item"> {allTrips[i].bathrooms} BA</li>
+                                <li className = "list-inline-item dot"></li>
+                                <li className = "list-inline-item"> Sleeps {allTrips[i].sleeps}</li>
+                                <li className = "list-inline-item dot"></li>
+                                <li className = "list-inline-item"> Min Stay {allTrips[i].minStay}</li>
+                            </ul>
+    
+                            <span className ="price">
+                                <strong style ={{fontSize: "20px"}}><span className = "Price__value">${allTrips[i].currency + ' ' + allTrips[i].baseRate + ' /night'}</span></strong>
+                            </span>
+
+                        </div>      
                     </div>
                 </div>
             });
-            }
+        }
     }
 
     render(){

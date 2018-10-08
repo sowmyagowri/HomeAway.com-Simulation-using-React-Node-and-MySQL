@@ -88,7 +88,7 @@ class OwnerLogin extends Component{
                 })
                 .catch(error => {
                     console.log(error);
-                    alert ("Login unsuccesful")
+                    alert ("Authentication Failed! Please try again")
                 });
         }
     }

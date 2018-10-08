@@ -133,10 +133,6 @@ class Signup2 extends Component{
                         this.setState({
                             authFlag : true
                         })
-                    }else {
-                        this.setState({
-                            authFlag : false
-                        })
                     }
                 })
                 .catch(err => {

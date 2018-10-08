@@ -142,11 +142,11 @@ class OwnerPropertyListings extends Component {
         
         let redirectVar = null;
         console.log(cookie.load('cookie1'))
-        if(cookie.load('cookie1') != 'ownercookie'){
+        if(cookie.load('cookie1') !== 'ownercookie'){
           redirectVar = <Redirect to = "/owner/login"/>
         }
 
-        if (this.state.allListings.length == 0) {
+        if (this.state.allListings.length === 0) {
             this.state.detailsFetched = false 
         }
         else {

@@ -36,11 +36,12 @@ class Profile extends Component{
         window.location = "/"
     }
 
-    componentDidMount(){
-        var input_email = cookie.load('cookie2');
-        console.log(input_email);
-        const data = { email : input_email }
-        axios.post('http://localhost:3001/homeaway/profile', data)
+    componentWillMount(){
+        if(cookie.load('cookie1')){
+            var input_email = cookie.load('cookie2');
+            console.log(input_email);
+            const data = { email : input_email }
+            axios.post('http://localhost:3001/homeaway/profile', data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200){
@@ -63,6 +64,7 @@ class Profile extends Component{
                         authFlag : false
                 })
             });
+        }
     }
 
     firstnameChangeHandler = (e) => {this.setState({firstname : e.target.value})}
@@ -142,12 +144,12 @@ class Profile extends Component{
                         console.log(response.data)
                         this.setState({profiledata : response.data})
                         alert("Profile Data was succesfully saved!");
-                    } else {
-                        this.setState({
-                            authFlag : false
-                    })
-                }
-            });
+                    }
+                }) 
+                .catch (error => {
+                    console.log("Error is:", error);
+                    alert ("Profile data save error!");
+                });
         }
     }
 

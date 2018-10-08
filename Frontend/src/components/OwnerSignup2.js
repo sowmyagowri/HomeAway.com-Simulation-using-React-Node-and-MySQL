@@ -133,7 +133,13 @@ class Signup2 extends Component{
                         this.setState({
                             authFlag : true
                         })
-                        alert ("Owner profile added to traveller login")
+                        alert ("Owner profile created")
+                    }
+                    if(response.status === 201){
+                        this.setState({
+                            authFlag : true
+                        })
+                        alert ("Owner profile added to Traveler login. You can now use the same login details ")
                     }
                 })
                 .catch(err => {
@@ -185,7 +191,7 @@ class Signup2 extends Component{
                 <div class="center">
                     <div id="yourdiv">
                         <h1 class="display-5">Sign Up for HomeAway<br></br></h1>
-                        <h2><small>	Already have an account? <a class="bg-default" href="/traveller/login">Log in</a></small></h2>
+                        <h2><small>	Already have an account? <a class="bg-default" href="/owner/login">Log in</a></small></h2>
                     </div>
                 </div>
                 <div class="container">

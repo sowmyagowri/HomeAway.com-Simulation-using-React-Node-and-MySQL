@@ -83,12 +83,11 @@ class TravellerLogin extends Component{
                         this.setState({
                             authFlag : true
                         })
-                    } else {
-                        this.setState({
-                            authFlag : false
-                        })
-                        alert ("User ID does not exist or password does not match")
                     }
+                })  
+                .catch (error => {
+                    console.log("Error is:", error);
+                    alert ("Authentication Failed! Please try again");
                 });
         }
     }
@@ -96,7 +95,7 @@ class TravellerLogin extends Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        console.log(cookie.load('cookie1'));
+        console.log("Cookie is", cookie.load('cookie1'));
         if(cookie.load('cookie1')){
             redirectVar = <Redirect to= "/"/>
         }

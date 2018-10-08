@@ -13,23 +13,31 @@ router.route('/traveller/login').post(function (req, res) {
   var password = req.body.password;
   
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
+    
     if (err) {
-      console.log(err);
+      console.log("User does not exist");
       res.status(400).json({responseMessage: 'User does not exist'});
     } else {
       if (rows.length > 0) {
         // Check if password matches
-        crypt.compareHash(req.body.password, rows[0].password, function (err, isMatch) {
+        crypt.compareHash(password, rows[0].password, function (err, isMatch) {
           if (isMatch && !err) {
             res.cookie('cookie1',"travellercookie",{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
             res.cookie('cookie3',rows[0].firstname,{maxAge: 900000, httpOnly: false, path : '/'});
             req.session.user = rows[0].email;
             res.status(200).json({responseMessage: 'Login Successful'});
+            console.log("Traveler found in DB");
           } else {
             res.status(401).json({responseMessage: 'Authentication failed. Passwords did not match.'})
+            console.log("Authentication failed. Passwords did not match.");
           }
         })
+      }
+      else {
+        res.status(402).json({responseMessage: 'Authentication failed. User does not exist.'})
+        console.log("Authentication failed. User does not exist.");
+        
       }
     }
   });
@@ -45,7 +53,7 @@ router.route('/owner/login').post(function (req, res) {
   
   pool.query('SELECT * FROM users WHERE email = ?', [trimemail], (err, rows) => {
     if (err) {
-      console.log(err);
+      console.log("User does not exist");
       res.status(400).json({responseMessage: 'User does not exist'});
     } else {
       if (rows.length > 0) {
@@ -58,9 +66,14 @@ router.route('/owner/login').post(function (req, res) {
             console.log("Owner found in DB");
             res.status(200).json({responseMessage: 'Login Successful'});
           } else {
-            res.status(401).json({responseMessage: 'Login Not Successful'});
+            res.status(401).json({responseMessage: 'Authentication failed. Passwords did not match.'})
+            console.log("Authentication failed. Passwords did not match.");
           }
         })
+      }
+      else {
+        res.status(402).json({responseMessage: 'Authentication failed. User does not exist.'})
+        console.log("Authentication failed. User does not exist.");
       }
     }
   });
@@ -151,7 +164,7 @@ router.route('/owner/signup').post(function (req, res) {
               res.cookie('cookie1',"ownercookie",{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie2',trimemail,{maxAge: 900000, httpOnly: false, path : '/'});
               res.cookie('cookie3',req.body.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-              res.status(200).json({responseMessage: 'Owner profile added to traveller login'});
+              res.status(201).json({responseMessage: 'Owner profile added to traveller login'});
             }
           })
         }
